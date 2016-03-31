@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>RESTful API</name>
+	<uri>http://manafx.com/modules/restful-api</uri>
+	<description>Application Programming Interface</description>
+	<author>manacode</author>
+	<author_uri>https://github.com/manacode</author_uri>
+	<version>1.6.8</version>
+	<license>MIT</license>
+	<license_uri>https://github.com/manacode/manafx/blob/master/LICENSE</license_uri>
+</module>

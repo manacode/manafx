@@ -1,0 +1,102 @@
+<?php
+	$headerfooter->add_css(array(
+		array(
+			"path" => $templateUri . "/css/image-hover-ie7.css",
+			"priority" => 0,
+			"condition" => "IE 7"
+		),
+		array(
+			"path" => $templateUri . "/css/image-hover-ie8.css",
+			"priority" => 0,
+			"condition" => "IE 8"
+		),
+	));
+	$this->assets->addCss($templateUri . "/css/flags.css");
+	$this->assets->addCss($templateUri . "/common/bootstrap-select/css/bootstrap-select.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/bootstrap-select/js/bootstrap-select.min.js");
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-globe"></span> <?php echo $this->t->_("Languages");?></h2>
+  <?php $this->flashSession->output(); ?>
+  <?php if ($this->auth->edit) { ?>
+		<h3 class="hidden" for="language-selector"><?php echo $this->t->_("Manage Language");?></h3>
+	  <form name="frmManage" method="post" class="form-inline" action="<?php echo $adminurl . "/languages/";?>">
+	  	<input type="hidden" name="languageCode" />
+		  <div class="form-group">
+		    <select id="language-selector" class="selectpicker show-tick" data-live-search="true" title="<?php echo $this->t->_("Please select language");?> ...">
+			  <?php
+			  	foreach ($languages as $language => $metadata) {
+			  		$flang = strtolower($language);
+			  		if (strlen($flang)>2) {
+			  			$flang = substr($flang, -2);
+		  			}
+						echo "<option data-icon='flag flag-$flang' value='$language'>";
+						echo $metadata['name'];
+						echo "</option>";
+			 		}
+				?>
+		    </select>
+	  	</div>
+			<div id="manage-btn-group" class="btn-group">
+			  <button type="button" class="btn-action btn btn-primary" data-action="create" data-caption_manage="<?php echo $this->t->_("Manage");?>"><?php echo $this->t->_("Create");?></button>
+			  <button type="button" class="btn-togler btn btn-primary dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    <span class="caret"></span>
+			    <span class="sr-only">Toggle Dropdown</span>
+			  </button>
+			  <ul class="dropdown-menu">
+			    <li><a id="manage-default" href="javascript:void(0)"><?php echo $this->t->_("Set as default");?></a></li>
+			    <?php if ($this->auth->delete) { ?>
+			    <li role="separator" class="divider"></li>
+			    <li><a id="manage-delete" href="javascript:void(0)"><?php echo $this->t->_("Delete");?></a></li>
+			    <?php }?>
+			  </ul>
+			</div>
+		</form>
+		<?php }?>
+</div>
+
+<div id="deleteLanguage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel"><?php echo $this->t->_("Delete Language Confirmation");?></h3>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $this->t->_("delete_language_confirmation_message", 'Delete "<span id="language_id"></span>" language?');?></p>
+				<p class="text-danger"><?php echo $this->t->_("delete_language_warning_message", "Warning: this will delete all files for selected language");?>.</p>
+			  <form name="frmDelete" method="post" class="form-horizontal" action="<?php echo $adminurl . "/languages/delete";?>">
+			  	<input type="hidden" name="languageCode2Delete" />
+			  	<input type="hidden" name="languageName2Delete" />
+			  	<label><?php echo $this->t->_("Delete options");?></label>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="deleteOptions" value="active" />
+					    <?php echo $this->t->_("also delete language in active modules only");?>
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="deleteOptions" value="all" />
+					    <?php echo $this->t->_("also delete language in all modules");?>
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="deleteOptions" value="none" checked="checked" />
+					    <?php echo $this->t->_("Leave language in all modules");?>
+					  </label>
+					</div>
+
+				</form>
+			</div>
+			<div id="alertMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary"><?php echo $this->t->_("Delete");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->t->_("Cancel");?></button>
+			</div>
+		</div>
+	</div>
+</div>

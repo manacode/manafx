@@ -1,0 +1,94 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" href="<?php echo $adminurl;?>"><?php echo $this->config->application->title;?></a>
+	  </div>
+	  <div class="navbar-collapse collapse">
+	    <ul class="nav navbar-nav">
+	    	<li><a href="/" target="_blank"><?php echo $this->t->_('View Site');?></a></li>
+<?php
+	if (isset($adminNavbarLeftMenu) && ($adminNavbarLeftMenu)) {
+		foreach($adminNavbarLeftMenu as $menu_key => $menu) {
+			$caption = $menu['caption'];
+			$action = isset($menu['action']) ? $menu['action'] : "";
+			$beforeCaption = isset($menu['beforeCaption']) ? $menu['beforeCaption'] . ' ' : "";
+			$class = isset($menu['active']) ? ' active' : '';
+			if (isset($menu['submenus']) && !empty($menu['submenus'])) {
+	    	echo "<li class='dropdown$class'>";
+				echo '<a href="' . $action . '" class="dropdown-toggle" data-toggle="dropdown">' . $beforeCaption . $caption . ' <b class="caret"></b></a>
+								<ul class="dropdown-menu">';
+				$submenus = $menu['submenus'];
+				foreach ($submenus as $submenu_key => $submenu) {
+					$sub_caption = $submenu['caption'];
+					$sub_action = $submenu['action'];
+					$sub_class = isset($submenu['class']) ? $submenu['class'] : "";
+					$sub_beforeCaption = isset($submenu['beforeCaption']) ? $submenu['beforeCaption'] . ' ' : "";
+					if (isset($submenu['divider']) && $submenu['divider']) {
+						echo '<li class="divider"></li>';
+					}
+					if ($sub_action!="") {
+						$sub_class_active = isset($submenu['active']) ? ' class="active"' : "";
+						echo '<li' . $sub_class_active . '><a href="' . $sub_action . '">' . $sub_beforeCaption . $sub_caption . '</a></li>';
+					} else {
+						echo '<li class="' . $sub_class . '">' . $sub_beforeCaption . $sub_caption . '</li>';
+					}
+				}
+				echo '  </ul>
+							</li>';
+			} else {
+				if ($action!="") {
+					echo '<li><a href="' . $action . '">' . $beforeCaption . $caption . '</a></li>';
+				}
+			}
+		}
+	}
+?>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+<?php
+	if (isset($adminNavbarRightMenu) && ($adminNavbarRightMenu)) {
+		foreach($adminNavbarRightMenu as $menu_key => $menu) {
+			$caption = $menu['caption'];
+			$action = $menu['action'];
+			$beforeCaption = isset($menu['beforeCaption']) ? $menu['beforeCaption'] . ' ' : "";
+			$class = isset($menu['active']) ? ' active' : '';
+			if (isset($menu['submenus']) && !empty($menu['submenus'])) {
+	    	echo "<li class='dropdown$class'>";
+				echo '<a href="' . $action . '" class="dropdown-toggle" data-toggle="dropdown">' . $beforeCaption . $caption . ' <b class="caret"></b></a>
+								<ul class="dropdown-menu">';
+				$submenus = $menu['submenus'];
+				foreach ($submenus as $submenu_key => $submenu) {
+					$sub_caption = $submenu['caption'];
+					$sub_action = $submenu['action'];
+					$sub_beforeCaption = isset($submenu['beforeCaption']) ? $submenu['beforeCaption'] . ' ' : "";
+					if (isset($submenu['divider']) && $submenu['divider']) {
+						echo '<li class="divider"></li>';
+					}
+					if ($sub_action!="") {
+						$sub_class_active = isset($submenu['active']) ? ' class="active"' : "";
+						echo '<li' . $sub_class_active . '><a href="' . $sub_action . '">' . $sub_beforeCaption . $sub_caption . '</a></li>';
+					} else {
+						echo '<li class="' . $sub_class . '">' . $sub_beforeCaption . $sub_caption . '</li>';
+					}
+				}
+				echo '  </ul>
+							</li>';
+			} else {
+				if ($action!="") {
+					echo '<li><a href="' . $action . '">' . $beforeCaption . $caption . '</a></li>';
+				}
+			}
+		}
+	}
+?>
+			</ul>
+		</div>
+	</div>
+</div>

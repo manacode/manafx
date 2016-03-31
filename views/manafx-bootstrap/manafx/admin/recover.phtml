@@ -1,0 +1,16 @@
+<div class="container">
+	<h2 class="form-recover-heading"><?php echo $this->t->_('Recover Account');?></h2>
+  <?php
+		$this->flashSession->output();
+	?>
+  <form class="form-inline form-recover" role="form" method="post">
+		<p><?php echo $this->t->_('Recover Account Page Instruction', 'Please enter the email address for your account. A verification code will be sent to you. Once you have received the verification code, you will be able to choose a new password for your account.');?></p>
+	  <div class="form-group">
+			<?php echo $form->render("user_email", array('class'=>'form-control')) ?>
+		</div>
+		<?php echo $form->render("Send") ?>
+    <input type="hidden" name="http_referer" value="<?php echo isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';?>" />
+    <?php echo $form->render("csrf", array('value' => $this->security->getToken())) ?>
+  </form>
+
+</div>

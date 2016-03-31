@@ -1,0 +1,57 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-lock"></span> Manage (<?php echo $role->role_name;?>) Permissions</h2>
+	<div class="clearfix">&nbsp;</div>
+	<p class="lead">Manage the permission settings for the <strong><?php echo $role->role_name;?></strong> user group.</p>
+	<div class="permissions">
+		<form role="form" method="post" action="<?php echo $adminurl . "/permissions/update";?>">
+			<input type="hidden" name="role_id" value="<?php echo $role->role_id;?>" />
+		<?php
+			foreach($resources as $module => $controllers) {
+				echo '<div class="panel panel-default">';
+				echo '<div class="panel-heading">';
+				echo '<h3 class="panel-title">' . strtoupper($module) . '</h3>';
+	      echo '</div>';
+	      echo '<div class="panel-body">';
+      	echo '<div class="checkbox">
+				        <label>
+				          <input type="checkbox" class="check-all" data-toggle="module_' . $module . '"> Check All
+				        </label>
+				      </div>';
+				echo '<div id="module_' . $module . '" class="permission_module module_' . $module . '">';
+				foreach($controllers as $controller => $actions) {
+					$ctl = ucwords(str_replace("_", " ", $controller));
+					echo '<div class="permission_class">';
+					echo '<div class="class_title label label-warning">' . $ctl . '</div>';
+					echo '<ul class="list-unstyled permission_action">';
+					foreach ($actions as $val) {
+						$action = ucwords($val['action']);
+						$is_public = $val['is_public'];
+						echo '<li><div class="checkbox">';
+						$value = $module . "." . $controller . "." . $action;
+						$tags = '';
+						if ($is_public) {
+							$tags .= ' disabled="disabled"';
+						}
+						if (in_array($value, $permissions) || $is_public) {
+							$tags .= ' checked="checked"';
+						}
+						echo '<label><input type="checkbox" class="permission_checkbox" data-toggle="module_' . $module . '" name="permissions[]" value="' . $value . '"' . $tags . '>' . $action . '</label>';
+						echo '</div></li>';
+					}
+					echo "</ul>";
+					echo "</div>";
+				}
+				echo "</div>";
+				echo "</div>";
+				echo "</div>";
+				echo '<div class="clearfix">&nbsp;</div>';
+			}
+			echo '<button type="submit" class="btn btn-primary">Update Permissions</button>';
+		?>
+		</form>
+	</div>
+  <div class="hide-if-no-paging">
+    <ul class="pagination pull-right"></ul>
+	</div>
+
+</div>

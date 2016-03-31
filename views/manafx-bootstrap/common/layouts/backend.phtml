@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="<?php echo $this->config->application->language;?>">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="<?php echo $this->config->application->description;?>" />
+    <meta name="author" content="manafx.com" />
+    <link rel="shortcut icon" href="<?php echo $this->config->application->baseUrl . "/favicon.ico";?>" />
+
+    <title><?php echo $this->config->application->title;?></title>
+    <link rel="stylesheet" type="text/css" href="<?php echo $templateUri . '/themes/' . $current_theme . '/bootstrap.min.css';?>" />
+    <?php
+    	$this->assets->addCss($templateUri . '/common/font-awesome-4.5.0/css/font-awesome.min.css');
+			$this->assets->addCss($templateUri . '/css/perfect-scrollbar.css');
+			$this->assets->addCss($templateUri . '/themes/' . $current_theme . '/backend.css');
+			$this->assets->outputCss();
+    ?>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <?php
+    	/*
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      */
+			$this->assets
+			    ->collection('ie-support')
+			    ->addJs($templateUri . '/js/html5shiv.js')
+			    ->addJs($templateUri . '/js/respond.min.js');
+			$this->assets->outputJs('ie-support');
+    ?>
+    <![endif]-->
+    <?php
+			$this->assets
+			    ->collection('header-static')
+			    ->addJs($templateUri . '/js/jquery-1.11.0.min.js')
+			    ->addJs($templateUri . '/js/jquery.cookie.js?v=1.4.1');
+		?>
+    <?php $this->assets->outputJs('header-static'); ?>
+    <?php $this->assets->outputJs('header-dynamic'); ?>
+    <?php echo $headerfooter->get_header();?>
+	</head>
+	<body>
+		<?php include("sidebar.phtml"); ?>
+		<?php include("infobar.phtml"); ?>
+		<div id="wrapper-main">
+			<?php  include("navbar-backend.phtml"); ?>
+	    <div id="wrapper-content" class="container-fluid <?php echo $module_name . ' ' . $module_name.'-'.$controller_name . ' ' . $module_name.'-'.$controller_name.'-'.$action_name;?>">
+	      <div class="row">
+					<?php echo $this->getContent();?>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<div id="wrapper-footer" class="<?php echo $module_name.'-'.$controller_name.'-'.$action_name;?>">
+				<p><small><a href="http://manafx.com">Mana Application Framework</a></small></p>
+			</div>
+		</div>
+		<?php # echo $getOffline;?>
+		<?php
+			$this->assets
+			    ->collection('footer-static')
+			    ->addJs($templateUri . '/js/jquery.mousewheel.js')
+			    ->addJs($templateUri . '/js/perfect-scrollbar.js')
+			    ->addJs($templateUri . '/js/bootstrap.min.js')
+			    ->addJs($templateUri . '/js/manafx.js')
+			    ->addJs($templateUri . '/js/' . '/manafx/backend.js');
+			    
+			// $this->assets->collection('footer-dynamic');
+			$this->assets->outputJs('footer-static');
+			$this->assets->outputJs('footer-dynamic');
+
+		?>
+  </body>
+</html>

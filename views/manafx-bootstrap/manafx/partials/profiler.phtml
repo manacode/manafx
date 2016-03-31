@@ -1,0 +1,261 @@
+<?php
+?>
+<style>
+	#wrapper-content {
+		padding-bottom: 150px;
+	}
+	#sidebar {bottom: 30px;}
+	#profiler {
+	  position: fixed;
+	  bottom: 0;
+	  left: 0;
+	  width: 100%;
+	  background: black;
+	  color: white;
+	  z-index: 999;
+	}
+	#profiler > .bar {
+	  height: 20px;
+	  padding: 5px;
+	  display: block;
+	  border-top: 1px solid #999999;
+	}
+	#profiler > .bar > .title {
+		float: left;
+		font-weight: bold;
+	}
+	#profiler > .bar > .info {
+	  float: left;
+	}
+	#profiler > .bar > .info > li {
+	  float: left;
+	  margin-right: 20px;
+	}
+	#profiler > .output {
+	  position: absolute;
+	  bottom: 35px;
+	  max-height: 500px;
+	  overflow: auto;
+	  background: black;
+	  width: 100%;
+	  border-bottom: 1px solid #444444;
+	}
+	.profile-item {
+	  background: #444;
+	  margin: 5px;
+	}
+	dl {margin: 0;}
+
+	@media (max-width: 767px) {
+		#sidebar {bottom: 0px;}
+		#profiler {
+			float: left;
+		  position: relative;
+		  display: block;
+		  min-width: 200px;
+		  height: auto;
+		  z-index: 990;
+		}
+	}	
+</style>
+
+<div id="profiler">
+	<div class="bar clearfix">
+	  <ul class="list-unstyled info">
+	    <li title="Total SQL queries"><button class="title btn btn-primary btn-xs" onclick="dbprofilerToggle();">Total SQL queries: <?php echo $db_profiler->getNumberTotalStatements(); ?></button></li>
+	    <?php $seconds = round($db_profiler->getTotalElapsedSeconds(), 5) ?>
+	    <li title="Total SQL elapsed seconds">Total SQL elapsed time: <?php echo $seconds; ?> s</li>
+	    <li title="Rendered Views"><button class="title btn btn-primary btn-xs" onclick="renderedviewsToggle();">Rendered Views: <?php echo count($rendered_views);?></button></li>
+	    <li title="Memory usage">Memory: <?php echo round(memory_get_peak_usage(true)/1024/1024, 2); ?> Mb</li>
+	    <li title="Page Load Time">Page load: <?php echo $time_end; ?> s</li>
+	    <li title="Router"><button class="title btn btn-primary btn-xs" onclick="routerinfoToggle();">Router</button></li>
+	    <li title="Server"><button class="title btn btn-primary btn-xs" onclick="serverinfoToggle();">Server Vars</button></li>
+	  </ul>
+	  
+	</div>
+	<div class="output output-dbprofiler" style="display: none;">
+	<?php
+	  if ($db_profiler->getProfiles()) {
+			foreach ($db_profiler->getProfiles() as $pf) {
+	?>
+		    <div class="profile-item dbprofile">
+	        <dl>
+	          <dt>SQL Statement:</dt>
+	          <dd>
+	            <?php
+	            	echo $pf->getSQLStatement();
+							?>
+						</dd>
+	
+	          <dt>Total Elapsed Time:
+							<?php
+								$seconds = round($pf->getTotalElapsedSeconds(), 5);
+								echo "<small>" . $seconds . " s </small>";
+							?>
+						</dt>
+	        </dl>
+		    </div>
+	<?php
+			}
+	  }
+	?>
+	</div>
+	<div class="output output-renderedviews" style="display: none;">
+	<?php
+	  if ($rendered_views) {
+			foreach ($rendered_views as $rendered_view) {
+	?>
+		    <div class="profile-item renderedview">
+	        <dl>
+	          <dt>View Path:</dt>
+	          <dd>
+	            <?php
+	            	echo "<p>" . $rendered_view['path'] . "</p>";
+							?>
+						</dd>
+	
+	          <dt>Parameters: <?php echo (count($rendered_view['params'])==0) ? "None" : "";?></dt>
+	          <dd>
+							<?php
+								echo "<ul>";
+								foreach($rendered_view['params'] as $param => $value) {
+									echo "<li>";
+									if (is_array($value)) {
+										echo $param;
+										echo "<ul>";
+										$maxItems = 50;
+										foreach($value as $val => $v) {
+											echo "<li>$val = $v</li>";
+											if ($maxItems<=0) {
+												echo "<li>...</li>";
+												break;
+											}
+											$maxItems--;
+										}
+										echo "</ul>";
+									} else {
+										echo "$param = $value";
+										echo "<br />";
+									}
+									echo "</li>";
+								}
+								echo "</ul>";
+							?>
+						</dd>
+	        </dl>
+		    </div>
+	<?php
+			}
+	  }
+	?>
+	</div>
+	<div class="output output-routerinfo" style="display: none;">
+	<?php
+	  if ($router_info) {
+	?>
+	    <div class="profile-item routerinfo">
+		    <dl>
+		    	<p><strong>Base URI: </strong><?php echo $url_info['base_uri'];?></p>
+		    	<p><strong>Static Base URI: </strong><?php echo $url_info['static_base_uri'];?></p>
+		    	<p><strong>Base Path: </strong><?php echo $url_info['base_path'];?></p>
+		    	<p><strong>Module Name: </strong><?php echo $router_info['ModuleName'];?></p>
+		    	<p><strong>Controller Name: </strong><?php echo $router_info['ControllerName'];?></p>
+		    	<p><strong>Action Name: </strong><?php echo $router_info['ActionName'];?></p>
+          <p><strong>Params: </strong><?php echo (count($router_info['Params'])==0) ? "None" : "";?>
+	          <?php
+	       			echo "<ul>";
+	          	foreach ($router_info['Params'] as $param) {
+	         			echo "<li>" . $param . "</li>";
+	       			}
+	       			echo "</ul>";
+						?>
+					</p>
+          <dt>Matched Route</dt>
+          <dd>
+          	<ul>
+            <?php
+            	foreach ($router_info['MatchedRoute'] as $key => $val) {
+            		echo "<li>";
+            		if (is_array($val)) {
+            			echo "<strong>$key</strong> : ";
+            			echo "<ul>";
+            			foreach ($val as $k => $v) {
+            				echo "<li>$k: ";
+            				$cv = $v;
+            				if (is_array($v)) {
+            					$cv = "(array)";
+           					}
+           					if (is_object($v)) {
+           						$cv = var_dump($v);
+           						echo "</li";
+            				} else {
+            					echo $cv . "</li>";
+           					}
+            			}
+            			echo "</ul>";
+           			} else {
+           				if (is_object($val)) {
+         						echo "(object) " . get_class($val);
+									} else {
+            				echo "<strong>$key</strong> : " . $val;
+          				}
+            		}
+            		echo "</li>";
+            		
+           		}
+						?>
+						</ul>
+					</dd>
+
+        </dl>
+	    </div>
+	<?php
+	  }
+	?>
+	</div>
+	<div class="output output-serverinfo" style="display: none;">
+	<?php
+	  if ($server_info) {
+	  	echo '<div class="profile-item serverinfo">';
+	  	echo "<ul>";
+			foreach ($server_info as $si => $val) {
+				if (is_array($val)) {
+				} else {
+					echo "<li><strong>" . $si . ": </strong>" . $val . "</li>";
+				}
+			}
+	  	echo "</ul>";
+	  	echo '</div>';
+	  }
+	?>
+	</div>
+</div>
+
+<script type="text/javascript">
+<!--
+	  function dbprofilerToggle() {
+	  $("#profiler > .output-renderedviews").hide();
+	  $("#profiler > .output-routerinfo").hide();
+	  $("#profiler > .output-serverinfo").hide();
+	  $("#profiler > .output-dbprofiler").toggle();
+  }
+  function renderedviewsToggle() {
+	  $("#profiler > .output-dbprofiler").hide();
+	  $("#profiler > .output-routerinfo").hide();
+	  $("#profiler > .output-serverinfo").hide();
+	  $("#profiler > .output-renderedviews").toggle();
+  }
+  function routerinfoToggle() {
+	  $("#profiler > .output-dbprofiler").hide();
+	  $("#profiler > .output-renderedviews").hide();
+	  $("#profiler > .output-serverinfo").hide();
+	  $("#profiler > .output-routerinfo").toggle();
+  }
+  function serverinfoToggle() {
+	  $("#profiler > .output-dbprofiler").hide();
+	  $("#profiler > .output-renderedviews").hide();
+	  $("#profiler > .output-routerinfo").hide();
+	  $("#profiler > .output-serverinfo").toggle();
+  }
+-->
+</script>

@@ -1,0 +1,42 @@
+<?php
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js")
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-lock"></span> Manage Permissions</h2>
+	<?php $this->flashSession->output(); ?>
+  <?php echo $this->gridToolbar->output(); ?>
+	<div class="table-responsive datagrid">
+		<table class="table footable table-hover table-condensed" data-page-size="<?php echo $this->config->public->grid_rows;?>" data-limit-navigation="5" data-filter="#search-filter">
+			<thead>
+			  <tr>
+		      <th data-sort-ignore="true" class="column-icon"></th>
+ 		      <th data-toggle="true">Role Name</th>
+		      <th data-sort-ignore="true" data-hide="phone,tablet">Description</th>
+			  </tr>
+			</thead>
+			<tbody>
+			<?php foreach($roles as $role) { ?>
+				<tr data-id="<?php echo $role->role_id;?>" class="<?php echo ($role->role_id < 11) ? 'default-system-role' : '';?>">
+					<td><button class="btnPermisi btn btn-primary btn-xs" data-role_id="<?php echo $role->role_id;?>" title="Manage `<?php echo $role->role_name;?>` Permissions" onclick="location.href='<?php echo $adminurl . "/permissions/manage/" . $role->role_id;?>'"><span class="glyphicon glyphicon-edit"></span></button></td>
+					<td><?php echo $role->role_name;?></td>
+					<td><?php echo $role->role_description;?></td>
+				</tr>
+			<?php } ?>
+			</tbody>
+			<tfoot class="hide-if-no-paging">
+				<tr>
+					<td colspan="4">
+						<div class="text-center paging">
+							<ul class="pagination pagination-centered"></ul>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div><?php echo $pager;?></div>
+
+</div>

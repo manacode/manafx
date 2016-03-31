@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="Manafx.com" />
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico" />
+
+    <title>Mana Application Framework</title>
+		<link rel="stylesheet" type="text/css" href="<?php echo $templateUri . '/themes/' . $current_theme . '/bootstrap.min.css';?>" />
+    <?php
+			$this->assets->addCss($templateUri . '/themes/' . $current_theme . '/manafx/style.css');
+			$this->assets->addCss($templateUri . '/themes/' . $current_theme . '/manafx/offline-frontend.css');
+			$this->assets->outputCss();
+    ?>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <?php
+    	/*
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      */
+			$this->assets
+			    ->collection('header-static')
+			    ->addJs($templateUri . '/js/html5shiv.js')
+			    ->addJs($templateUri . '/js/respond.min.js');
+    ?>
+    <![endif]-->
+    <?php
+			$this->assets
+		    ->collection('header-static')
+		    ->addJs($templateUri . '/js/jquery-1.11.0.min.js')
+		    ->addJs($templateUri . '/js/jquery.cookie.js?v=1.4.1');
+		?>
+    <?php $this->assets->outputJs('header-static'); ?>
+    <?php $this->assets->outputJs('header-dynamic'); ?>
+    <?php echo $headerfooter->get_header();?>
+	</head>
+	<body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+				<div class="cover-container">
+          <div class="inner cover">
+            <h1 class="cover-heading">Scheduled Downtime</h1>
+            <p class="lead"><?php echo $message;?></p>
+            <p class="lead">
+              <?php
+              	if ($this->session->has('auth-i')) {
+              		echo '<a href="/logout" class="btn btn-lg btn-default">Logout</a>';
+             		}
+          		?>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+		<?php
+			$this->assets
+		    ->collection('footer-static')
+		    ->addJs($templateUri . '/common/bootstrap/js/bootstrap.min.js')
+		    ->addJs($templateUri . '/js/manafx.js');
+		?>
+  </body>
+</html>

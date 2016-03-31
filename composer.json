@@ -1,0 +1,19 @@
+{
+    "name": "manafx",
+    "description": "Application Framework Powered by Phalcon",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "cms",
+        "phalcon"
+    ],
+    "homepage": "http://manafx.com/php/phalcon",
+    "require": {
+        "manacode/php-helpers": "dev-master",
+        "manacode/phalconlibs": "dev-master",
+        "phpunit/phpunit": "~4.8",
+        "filp/whoops": "1.*",
+        "swiftmailer/swiftmailer": "5.*",
+        "PHPOffice/PHPExcel": "1.*"
+    }
+}

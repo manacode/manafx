@@ -1,0 +1,110 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-user"></span> Users</h2>
+	<div class="col-sm-9 col-md-9">
+    <ul id="myTab" class="nav nav-tabs">
+      <li class="active"><a href="#search" data-toggle="tab">Search</a></li>
+      <li class=""><a href="#addnew" data-toggle="tab">Add New</a></li>
+    </ul>
+    <div id="tabUsers" class="tab-content">
+      <div class="tab-pane fade in active" id="search">
+				<form role="form" class="form form-horizontal" method="post" action="<?php echo $adminurl . "/users/search";?>" autocomplete="on">
+					<div class="form-group">
+						<label for="s_user_id" class="col-sm-3 control-label">User Id</label>
+						<div class="col-sm-6">
+							<?php echo $form->render("s_user_id") ?>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="s_user_firstname" class="col-sm-3 control-label">First Name</label>
+						<div class="col-sm-6">
+							<?php echo $form->render("s_user_firstname") ?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="s_user_lastname" class="col-sm-3 control-label">Last Name</label>
+						<div class="col-sm-6">
+							<?php echo $form->render("s_user_lastname") ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="s_user_email" class="col-sm-3 control-label">Email</label>
+						<div class="col-sm-6">
+							<?php echo $form->render("s_user_email") ?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="s_user_login" class="col-sm-3 control-label">Username</label>
+						<div class="col-sm-6">
+							<?php echo $form->render("s_user_login") ?>
+						</div>
+					</div>
+					
+					<!-- div class="form-group">
+						<label for="s_user_roles" class="col-sm-3 control-label">Roles</label>
+						<div class="col-sm-6">
+							< ?php echo $form->render("s_user_roles") ?>
+						</div>
+					</div -->
+
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-6">
+							<input type="submit" value="Search" class="btn btn-primary" />
+						</div>
+					</div>
+				</form>
+      </div>
+      <div class="tab-pane fade" id="addnew">
+				<?php
+					$this->flashSession->output();
+					/*
+					if ($this->request->isPost()) {
+						if (!$form->isValid($_POST)) {
+						    foreach ($form->getMessages() as $message) {
+						        echo '<div class="alert alert-dismissable alert-danger">';
+						        echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+						        echo $message;
+						        echo '</div>';
+						    }
+						}
+					}
+					*/
+				?>
+      	<form role="form" class="form form-horizontal" method="post" action="<?php echo $adminurl . "/users/saveUser";?>" autocomplete="on">
+					<input type="hidden" id="purpose" value="add" />
+      		<?php $this->partial("users/user-form");?>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-6">
+							<input type="submit" value="Submit" class="btn btn-primary" />
+						</div>
+					</div>
+				</form>
+      </div>
+    </div>
+	</div>
+	<div class="col-sm-3 col-md-3">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Users Status</h3>
+			</div>
+			<ul class="list-group">
+			  <li class="list-group-item">
+			    <span class="badge"><?php echo $total_users;?></span>
+			    Total Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge"><?php echo $total_banned;?></span>
+			    Banned Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge"><?php echo $total_locked;?></span>
+			    Locked Users
+			  </li>
+			</ul>
+		</div>
+	</div>
+
+
+</div>

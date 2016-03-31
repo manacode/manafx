@@ -1,0 +1,30 @@
+{
+    "name": "manacode/phalconlibs",
+    "type": "library",
+    "description": "Adapters, prototypes or functionality that can be potentially incorporated to the C-framework.",
+    "keywords": ["framework", "phalcon", "php"],
+    "homepage": "https://github.com/manacode/phalconlibs",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Leonardus Agung",
+            "email": "jempoler.com@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-phalcon": ">=2.0.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
+    },
+    "suggest": {
+        "manacode/manafx": "Mana Application Framework"
+    },
+    "autoload": {
+        "psr-4": { "Manacode\\Phalcon\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Manacode\\Phalcon\\Test\\": "tests/unit/" }
+    }
+}

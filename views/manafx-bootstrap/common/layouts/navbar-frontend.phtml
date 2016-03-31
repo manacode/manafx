@@ -1,0 +1,36 @@
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+		      <a class="navbar-brand" href="<?php echo $this->config->application->baseUrl;?>">
+		        <img width="20" height="20" alt="manafx" src="<?php echo $templateUri . "/img/manafx-brand.png";?>" />
+		      </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+            <li><a href="<?php echo $this->config->application->baseUrl;?>#home">Home</a></li>
+            <li><a href="<?php echo $this->config->application->baseUrl;?>#download">Download</a></li>
+            <li class="dropdown">
+              <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Modules <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo $this->config->application->baseUrl;?>#">Content Management System</a></li>
+                <li class="divider" role="separator"></li>
+                <li class="dropdown-header">Samples</li>
+                <li><a href="<?php echo $this->config->application->baseUrl;?>#">Restful API</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="">Documentation</a></li>
+            <li><a href="">Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>

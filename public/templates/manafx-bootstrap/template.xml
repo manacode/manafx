@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+	<name>Manafx Bootstrap</name>
+	<uri>http://manafx.com/phalcon/manafx-bootstrap/themes/default</uri>
+	<description>Default bootstrap theme for manafx.phalcon</description>
+	<author>manafx.com</author>
+	<author_uri>http://manafx.com</author_uri>
+	<version>1.6.8</version>
+	<tags>Twitter Bootstrap themes, Default, Responsive, Black, White, Dark, Light, Green, Orange, Two Columns, Three Columns, Left Sidebar, Right Sidebar, Fixed Layout, Responsive Layout, Custom Background, Custom Header, Custom Menu, Editor Style, Featured Images, Flexible Header, Full Width Template, Microformats, Post Formats, RTL Language Support, Sticky Post, Theme Options</tags>
+	<license>GPL-2.0+</license>
+	<license_uri>http://www.gnu.org/licenses/gpl-2.0.html</license_uri>
+</theme> 

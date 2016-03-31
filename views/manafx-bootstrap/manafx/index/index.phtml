@@ -1,0 +1,95 @@
+<?php
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . '/js/jquery.parallax-1.1.3.js')
+	    ->addJs($templateUri . '/js/jquery.localScroll.min.js')
+	    ->addJs($templateUri . '/js/jquery.scrollTo.min.js')
+?>
+<div id="home">
+	<div class="container">
+  	<div class="content navscroll col-sm-9 col-md-7 col-lg-6">
+			<h1>mana</h1>
+			<h2>FRAMEWORK</h2>
+      <p class="lead">Open source web application framework powered by Phalcon.</p>
+      <a href="#featured" class="btn btn-primary btn-lg btn-main">Learn more..</a>
+    </div>
+  </div>
+</div>
+
+<div id="featured" class="featured">
+	<div class="container">
+		<h2 class="title">Designed for developer, everywhere.</h2>
+		<p class="lead">Manafx makes web application development faster and easier. It's made for folks of all skill levels, application of all types, and projects of all sizes.</p>
+		<hr class="half-rule" />
+
+		<div class="row">
+			<div class="col-xs-6 col-md-4">
+				<h3>Modular</h3>
+				<p>Build web application on top of Manafx is quiet easy. With modular system, you can build many applications or modules in just one place.</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<h3>Thematic</h3>
+				<p>Manafx ships with default responsive template built with Bootstrap, but you can use your own template and theme to enhance the appearance of your application.</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<h3>Multilingual</h3>
+				<p>Manage an unlimited number of languages and translations, without ever needing to step outside of the options available in the Manafx core software.</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<h3>MVC Pattern</h3>
+				<p>Manafx helps you develop clean and reusable code. It follows the Model-View-Controller pattern, ensuring a clear separation of logic and presentation.</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<h3>Secure</h3>
+				<p>Security comes as standard with Mana framework. It includes input validation, output filtering, SQL injection and Cross-site scripting prevention.</p>
+			</div>
+			<div class="col-xs-6 col-md-4">
+				<h3>Ultra Fast</h3>
+				<p>Manafx only loads the features that you need. C-extensions (Phalcon) are loaded together with PHP one time on the web server's daemon start process.</p>
+			</div>
+		</div>
+		<div class="clearfix">&nbsp;</div>
+		<div class="row navscroll">
+			<a class="btn btn-default btn-lg" href="#phalcon">and much more</a>
+		</div>
+	</div>
+</div>
+
+
+<div id="phalcon">
+	<div class="bird col-xs-12"></div>
+	<div class="xcontainer">
+		<div class="col-xs-12 col-sm-6 col-md-5 col-lg-6">
+		</div>
+		<div class="content navscroll col-xs-12 col-sm-6 col-md-7 col-lg-6">
+      <h2>Phalcon Inside</h2>
+      <h3>Powered by Phalcon, a full-stack PHP framework delivered as a C-extension.</h3>
+      <p class="lead">It's innovative architecture makes Phalcon the fastest PHP framework ever built!</p>
+			<a href="http://docs.phalconphp.com/" class="phalcon-inside"></a>
+    </div>
+  </div>
+</div>
+
+<div id="download" class="featured">
+	<div class="container">
+		<h2 class="title">There are no limits!</h2>
+		<br />
+		<p class="lead">From simple to sophisticated, Manafx has the flexibility to power all sorts of web application. Flexible content structure and powerful templating allow easy realization of any design.</p>
+		<hr class="half-rule" />
+
+		<div class="row">
+			<p class="lead">Manafx is open source. It's hosted, developed, and maintained on GitHub.</p>
+			<a class="btn btn-default btn-lg" target="_blank" href="http://www.manafx.com/download">Download ManaFx</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.navscroll').localScroll(800);
+	$('.navbar').localScroll(800);
+	$('#home').parallax("50%", 0.3);
+	$('#phalcon').parallax("50%", 0.2);
+	$('.bird').parallax("30%", 0.8);
+	$('#third').parallax("50%", 0.3);
+})
+</script>

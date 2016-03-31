@@ -1,0 +1,16 @@
+.permissions h3 {
+}
+
+.permission_class {
+	display: inline-table;
+	margin: 10px 10px 10px 0;
+	min-width: 110px;
+}
+
+.permission_class .class_title {
+	font-size: 14px;
+}
+
+.manafx-permissions-index #gridToolBar .group-crud {
+	display: none;
+}

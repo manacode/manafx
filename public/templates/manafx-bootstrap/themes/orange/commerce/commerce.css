@@ -1,0 +1,18 @@
+.commerce {
+	font-size: 12px;
+}
+.commerce .nav > li > a {
+	padding: 10px;
+}
+
+tbody > tr > td {
+	padding: 2px 5px !important;
+	line-height: 1 !important;
+	vertical-align: middle !important;
+}
+
+tr.row_default > td, tr.row_default > td:hover {
+	color: maroon !important;
+	background-color: aqua !important;
+	font-weight: bold !important;
+}

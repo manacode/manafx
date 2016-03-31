@@ -1,0 +1,40 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-plus-sign"></span> Add New User</h2>
+  <?php
+		$this->flashSession->output();
+	?>
+	<div class="col-sm-9 col-md-9">
+		<form role="form" class="form form-horizontal" method="post" action="<?php echo $adminurl . "/users/createUser";?>" autocomplete="on">
+			<?php include("usersForm.phtml");?>
+	
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-6">
+					<input type="submit" value="Submit" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-sm-3 col-md-3">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Users Status</h3>
+			</div>
+			<ul class="list-group">
+			  <li class="list-group-item">
+			    <span class="badge badge-primary"><?php echo $total_users;?></span>
+			    Total Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge badge-danger"><?php echo $total_banned;?></span>
+			    Banned Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge badge-warning"><?php echo $total_locked;?></span>
+			    Locked Users
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+</div>
+<div class="clearfix">&nbsp;</div>

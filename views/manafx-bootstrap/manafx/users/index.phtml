@@ -1,0 +1,80 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-user"></span> Search Users</h2>
+  <?php
+		$this->flashSession->output();
+	?>
+
+	<div class="col-sm-9 col-md-9">
+		<form role="form" class="form form-horizontal" method="post" action="<?php echo $adminurl . "/users/search";?>" autocomplete="on">
+			<div class="form-group">
+				<label for="user_id" class="col-sm-3 control-label">User Id</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_id") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_firstname" class="col-sm-3 control-label">First Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_firstname") ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="user_lastname" class="col-sm-3 control-label">Last Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_lastname") ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="user_email" class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_email") ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="user_username" class="col-sm-3 control-label">Username</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_username") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_roles" class="col-sm-3 control-label">Roles</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_roles") ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-6">
+					<input type="submit" value="Search" class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-sm-3 col-md-3">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Users Status</h3>
+			</div>
+			<ul class="list-group">
+			  <li class="list-group-item">
+			    <span class="badge badge-primary"><?php echo $total_users;?></span>
+			    Total Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge badge-danger"><?php echo $total_banned;?></span>
+			    Banned Users
+			  </li>
+			  <li class="list-group-item">
+			    <span class="badge badge-warning"><?php echo $total_locked;?></span>
+			    Locked Users
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+</div>
+<div class="clearfix">&nbsp;</div>

@@ -1,0 +1,176 @@
+	<form role="form" name="settingsForm" class="form form-horizontal" method="post" autocomplete="on">
+		<input type="hidden" name="option_identity" value="application" />
+
+		<div class="form-group">
+			<label for="app_title" class="col-sm-3 control-label">Title</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="app_title" name="data[title]" value="<?php echo $data["application"]["title"];?>" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="app_description" class="col-sm-3 control-label">Description</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="app_description" name="data[description]" value="<?php echo $data["application"]["description"];?>" />
+				<span class="help-block">In a few words, explain what this application is about.</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="app_url" class="col-sm-3 control-label">Address(URL)</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="app_url" name="data[url]" value="<?php echo $data["application"]["baseUrl"];?>" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="admin_email" class="col-sm-3 control-label">Admin E-mail</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="admin_email" name="data[admin_email]" value="<?php echo $data["application"]["admin_email"];?>" />
+				<span class="help-block">This address is used for admin purposes, like new user notification.</span>
+			</div>
+		</div>
+	  <div class="form-group">
+	  	<label for="users_can_register" class="col-sm-3 control-label">Membership</label>
+	    <div class="col-sm-7">
+	      <div class="checkbox">
+	        <label>
+	          <input type="checkbox" id="users_can_register_checkbox" <?php echo ($data["application"]["users_can_register"]=="1") ? 'checked="checked"' : ''; ?> /> Anyone can register
+	        	<input type="hidden" id="users_can_register_input" name="data[users_can_register]" value="<?php echo $data["application"]["users_can_register"];?>"/>
+					</label>
+	      </div>
+	    </div>
+	  </div>
+		<div class="form-group">
+			<label for="default_role" class="col-sm-3 control-label">Default User Role</label>
+			<div class="col-sm-3">
+				<select class="form-control" id="default_role" name="data[default_role]">
+				<?php
+					foreach($roles as $role) {
+						$role_id = $role->role_id;
+						$role_name = $role->role_name;
+						if ($role_id==$default_role) {
+							$selected = ' selected="selected"';
+						} else {
+							$selected = '';
+						}
+						echo '<option value="' . $role_id . '"' . $selected . '>';
+						echo $role_name;
+						echo '</option>';
+				  }
+			  ?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="timezone_identifier" class="col-sm-3 control-label">Timezone</label>
+			<div class="col-sm-4">
+				<select class="form-control" id="timezone_string" name="data[timezone_identifier]">
+					<?php
+						foreach($fx_timezone as $tz => $val) {
+							if ($tz==$data["application"]["timezone_identifier"]) {
+								$selected = ' selected="selected"';
+							} else {
+								$selected = '';
+							}
+							echo '<option value="' . $tz . '"' . $selected . '>';
+							echo $tz . ' [' . $val . ']';
+							echo '</option>';
+						}
+					?>
+				</select>
+				<span class="help-block">Choose a city in the same timezone as you.</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Date Format</label>
+			<div class="col-sm-7">
+			<?php
+				$date_formats =array('Y/m/d', 'm/d/Y', 'd/m/Y', 'F j, Y');
+				$isChecked = false;
+				foreach ($date_formats as $date_format) {
+					$today = $this->dt->mdate($date_format);
+					if ($date_format==$data["application"]["date_format"]) {
+						$checked = ' checked="checked"';
+						$isChecked = true;
+					} else {
+						$checked = '';
+					}
+					echo '<div class="radio">';
+				  echo '<label>';
+				  echo '  <input type="radio" name="date_format" value="' . $date_format . '"' . $checked . ' />';
+				  echo $today . " <label class='label label-default'>$date_format</label>";
+					echo '</label>';
+					echo '</div>';
+				}
+			?>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="date_format" id="date_format_custom" value="__custom__"<?php echo ($isChecked) ? '' : ' checked="checked"';?> />
+				    Custom: <span id="custom_date"></span>
+				  </label>
+				</div>
+				<div class="col-sm-3">
+					<input class="form-control" type="text" value="<?php echo $data["application"]["date_format"];?>" id="date_format" name="data[date_format]" />
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Time Format</label>
+			<div class="col-sm-7">
+			<?php
+				$time_formats =array('g:i a', 'g:i A', 'H:i');
+				$isChecked = false;
+				foreach ($time_formats as $time_format) {
+					$today = $this->dt->mdate($time_format);
+					if ($time_format==$data["application"]["time_format"]) {
+						$checked = ' checked="checked"';
+						$isChecked = true;
+					} else {
+						$checked = '';
+					}
+					echo '<div class="radio">';
+				  echo '<label>';
+				  echo '  <input type="radio" name="time_format" value="' . $time_format . '"' . $checked . ' />';
+				  echo $today . " <label class='label label-default'>$time_format</label>";
+					echo '</label>';
+					echo '</div>';
+				}
+			?>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="time_format" id="time_format_custom" value="__custom__"<?php echo ($isChecked) ? '' : ' checked="checked"';?> />
+				    Custom: <span id="custom_time"></span>
+				  </label>
+				</div>
+				<div class="col-sm-3">
+					<input class="form-control" type="text" value="<?php echo $data["application"]["time_format"];?>" id="time_format" name="data[time_format]" />
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="start_of_week" class="col-sm-3 control-label">Week Starts On</label>
+			<div class="col-sm-3">
+				<select class="form-control" id="start_of_week" name="data[start_of_week]">
+				<?php
+					$day_name = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+					for ($iday = 0; $iday<count($day_name); $iday++) {
+						if ($iday==$data["application"]["start_of_week"]) {
+							$selected = ' selected="selected"';
+						} else {
+							$selected = '';
+						}
+						echo '<option value="' . $iday . '"' . $selected . '>' . $day_name[$iday] . '</option>';
+					}
+			  ?>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-7">
+				<button type="button" id="btnSave" class="btnSave btn btn-primary">Save Changes</button>
+			</div>
+		</div>
+	</form>
+	       	

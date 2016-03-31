@@ -1,0 +1,26 @@
+<style>
+	body {padding-top: 69px;}
+	.navbar-fixed-top {top: 20px;}
+	#sidebar {top: 70px;}
+	#sidebar-toggler {top: 70px !important;}
+	.infobar {top: 71px !important;}
+	
+	#offline-alert{
+	   position:fixed;
+	   top:0;
+	   left:0;
+	   width:100%;
+	   height:20px;
+	   background-color: #E7B550;
+	   z-index: 9999;
+	}
+</style>
+<?php
+	$offline_message = "Maintenance Mode";
+	if (isset($message)) {
+		$offline_message = $message;
+	}
+?>
+<div id="offline-alert">
+	<div class="text-center"><?php echo $offline_message;?></div>
+</div>

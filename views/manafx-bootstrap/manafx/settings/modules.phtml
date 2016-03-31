@@ -1,0 +1,67 @@
+<?php
+	$headerfooter->add_css(array(
+		array(
+			"path" => $templateUri . "/css/image-hover-ie7.css",
+			"priority" => 0,
+			"condition" => "IE 7"
+		),
+		array(
+			"path" => $templateUri . "/css/image-hover-ie8.css",
+			"priority" => 0,
+			"condition" => "IE 8"
+		)
+	));
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-paperclip"></span> Modules</h2>
+	<?php $this->flashSession->output(); ?>
+  <?php
+  	foreach ($modules as $key => $module) {
+  		$screenshot = $module['screenshot'];
+  		$mod_name = $module['name'];  		
+	?>
+	<div class="col-md-6">
+		<div class="media">
+		  <a class="pull-left" href="#">
+		    <img class="media-object" src="<?php echo $screenshot;?>" alt="<?php echo $mod_name;?>" style="width: 96px; height: 96px;" />
+		  </a>
+		  <div class="media-body">
+		    <h4 class="media-heading"><?php echo (strtolower($key)==strtolower($mod_name)) ? $mod_name : "$mod_name ($key)";?></h4>
+		    <?php if (in_array($key, $active_modules->toArray())) { ?>
+			  	<p><a class="btn btn-warning btn-xs" href="<?php echo $adminurl . "/settings/deactivate-module/" . $key;?>">Deactivate</a></p>
+			  <?php } else {?>
+					<p>
+						<a class="btn btn-primary btn-xs" href="<?php echo $adminurl . "/settings/activate-module/" . $key;?>">Activate</a>
+						<button class="btnDelete btn btn-danger btn-xs" data-module_id="<?php echo $key;?>" data-module_name="<?php echo $mod_name;?>" data-link="<?php echo $adminurl . "/settings/delete-module/" . $key;?>">Delete</button>
+					</p>
+		    <?php }?>
+		    <p class="small"><?php echo $module['description'];?></p>
+		    <p class="small">Version <?php echo $module['version'];?> | By <a href="<?php echo $module['author_uri'];?>"><?php echo $module['author'];?></a> | <a href="<?php echo $module['uri'];?>">Visit module site</a></p>
+		  </div>
+		</div>
+	</div>
+  		
+  <?php
+ 		}
+	?>
+</div>
+
+<div id="deleteModule" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Delete Module</h3>
+			</div>
+			<div class="modal-body">
+				<p>Delete "<span id="module_id"></span>" module?</p>
+				<p class="text-warning">Warning: this will delete all files for selected module.</p>
+			</div>
+			<div id="alertMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary">Delete</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

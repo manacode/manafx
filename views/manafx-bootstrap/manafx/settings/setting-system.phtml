@@ -1,0 +1,168 @@
+	<form role="form" name="settingsForm" class="form form-horizontal" method="post" autocomplete="on">
+		<input type="hidden" name="option_identity" value="system" />
+		<div class="form-group">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Front Page Displays</h3>
+			  </div>
+			  <div class="panel-body">
+			  	<span class="help-block">
+						Choose what's displayed on the front page of your site. It can be point to route, or a redirect/forward to internal/external url.
+					</span>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="data[frontpage_mode]" value="redirect_to" <?php echo ($this->config->system->frontpage_mode == "redirect_to") ? ' checked="checked"' : '';?>/>
+					    Redirect / Forwarding
+					  </label>
+					  <input type="text" class="form-control" id="mode_redirect" name="data[redirect_to]" value="<?php echo $this->config->system->redirect_to;?>" disabled="disabled" />
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="data[frontpage_mode]" id="mode_route" value="route_to" <?php echo ($this->config->system->frontpage_mode == "route_to") ? ' checked="checked"' : '';?>/>
+					    Point to Route
+					  </label>
+					</div>
+
+			  	<div id="route-group">
+						<div class="col-xs-12 col-sm-4">
+							<label for="base-module" class="control-label"><?php echo $this->t->_("Module");?></label>
+							<select class="form-control" id="base-module">
+							<?php foreach ($actions as $mod => $con) { ?>
+								<option data-module="<?php echo $mod;?>"<?php echo ($this->config->system->route_to->module == $mod) ? ' selected="selected"' : '';?>><?php echo ($mod == "manafx") ? "system" : $mod;?></option>
+							<?php } ?>
+							</select>
+							<?php $mod = $this->config->system->route_to->module; if ($mod=="manafx") $mod = "manafx"; ?>
+							<input type="text" class="form-control" id="base-module-input" name="data[route_to][module]" value="<?php echo $mod;?>" />
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<label for="base-controller" class="control-label"><?php echo $this->t->_("Controller");?></label>
+							<select class="form-control" id="base-controller">
+							<?php
+								foreach ($actions as $mod => $cons) {
+									if ($mod=="manafx") {
+										$mod = "system";
+									}
+									foreach ($cons as $con => $acts) {
+										$selected = '';
+										if ($this->config->system->route_to->module == $mod && $this->config->system->route_to->controller == $con) {
+											$selected = ' selected="selected"';
+										}
+							?>
+								<option class="route-controller route-<?php echo $mod;?>" data-module="<?php echo $mod;?>"  data-controller="<?php echo $con;?>"<?php echo $selected;?>><?php echo $con;?></option>
+							<?php }} ?>
+							</select>
+							<input type="text" class="form-control" id="base-controller-input" name="data[route_to][controller]" value="<?php echo $this->config->system->route_to->controller;?>" />
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<label for="base-action" class="control-label"><?php echo $this->t->_("Action");?></label>
+							<select class="form-control" id="base-action">
+							<?php
+								foreach ($actions as $mod => $cons) {
+									if ($mod=="manafx") {
+										$mod = "system";
+									}
+									foreach ($cons as $con => $acts) {
+										foreach ($acts as $act) {
+											$selected = '';
+											if ($this->config->system->route_to->module == $mod && $this->config->system->route_to->controller == $con && $this->config->system->route_to->action == $act) {
+												$selected = ' selected="selected"';
+											}
+							?>
+								<option class="route-action route-<?php echo $mod;?> route-<?php echo $mod;?>-<?php echo $con;?>" data-module="<?php echo $mod;?>"  data-controller="<?php echo $con;?>" data-action="<?php echo $act;?>"<?php echo $selected;?>><?php echo $act;?></option>
+							<?php }}} ?>
+							</select>
+							<input type="text" class="form-control" id="base-action-input" name="data[route_to][action]" value="<?php echo $this->config->system->route_to->action;?>" />
+						</div>
+					</div>
+				</div>
+		  </div>
+		</div>
+		<div class="form-group">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Debuging</h3>
+			  </div>
+			  <div class="panel-body">
+					<label class="col-sm-3 control-label">Debug Mode</label>
+					<div class="col-sm-8">
+						<div class="btn-group" data-toggle="buttons">
+						  <label class="btn btn-default<?php echo ($data["system"]["debug_mode"]=="off") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[debug_mode]" id="debug_off" autocomplete="off" value="off" <?php echo ($data["system"]["debug_mode"]=="off") ? 'checked="checked"' : ''; ?> /> No
+						  </label>
+						  <label class="btn btn-default<?php echo ($data["system"]["debug_mode"]=="on") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[debug_mode]" id="debug_on" autocomplete="off" value="on" <?php echo ($data["system"]["debug_mode"]=="on") ? 'checked="checked"' : ''; ?> /> Yes
+						  </label>
+						</div>
+						<span class="help-block">If enabled, diagnostic information, and SQL errors (if present) will be displayed. It is not advisable to leave the debug mode activated when running a live website.</span>
+					</div>
+					<label class="col-sm-3 control-label">Manafx Profiler</label>
+					<div class="col-sm-8">
+						<div class="btn-group" data-toggle="buttons">
+						  <label class="btn btn-default<?php echo ($data["system"]["profiler_mode"]=="off") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[profiler_mode]" id="profiler_off" autocomplete="off" value="off" <?php echo ($data["system"]["profiler_mode"]=="off") ? 'checked="checked"' : ''; ?> /> No
+						  </label>
+						  <label class="btn btn-default<?php echo ($data["system"]["profiler_mode"]=="on") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[profiler_mode]" id="profiler_on" autocomplete="off" value="on" <?php echo ($data["system"]["profiler_mode"]=="on") ? 'checked="checked"' : ''; ?> /> Yes
+						  </label>
+						</div>
+						<span class="help-block">If enabled, ManafxProfiler bar will be displayed at the bottom of every page. The bar will appear after next reload.</span>
+					</div>
+			  </div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Maintenance</h3>
+			  </div>
+			  <div class="panel-body">
+					<label class="col-sm-3 control-label">Maintenance Mode</label>
+					<div class="col-sm-8">
+						<div class="btn-group" data-toggle="buttons">
+						  <label class="btn btn-default<?php echo ($data["system"]["maintenance_mode"]=="off") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[maintenance_mode]" id="maintenance_off" autocomplete="off" value="off" <?php echo ($data["system"]["maintenance_mode"]=="off") ? 'checked="checked"' : ''; ?> /> No
+						  </label>
+						  <label class="btn btn-default<?php echo ($data["system"]["maintenance_mode"]=="on") ? ' active' : ''; ?>">
+						    <input type="radio" name="data[maintenance_mode]" id="maintenance_on" autocomplete="off" value="on" <?php echo ($data["system"]["maintenance_mode"]=="on") ? 'checked="checked"' : ''; ?> /> Yes
+						  </label>
+						</div>
+						<span class="help-block">Select whether access to the Site Frontend is available. If Yes, the Frontend will display or not a message depending on the settings below.</span>
+					</div>
+					<?php
+						$offline_message = getOptions(array("offline_message_mode", "offline_message_backend", "offline_message_frontend"));
+					?>
+					<div class="form-group">
+						<label for="offline_message_mode" class="col-sm-3 control-label">Offline Message Mode</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="offline_message_mode" name="data[offline_message_mode]">
+								<!-- option value="none" < ?php echo ($data["system"]["offline_message_mode"]=="none") ? 'selected="selected"' : ''; ?> >No Message</option>
+								<option value="custom" < ?php echo ($data["system"]["offline_message_mode"]=="custom") ? 'selected="selected"' : ''; ?>>Use Custom Message</option -->
+								<option value="none" <?php echo ($offline_message["offline_message_mode"]=="none") ? 'selected="selected"' : ''; ?> >No Message</option>
+								<option value="custom" <?php echo ($offline_message["offline_message_mode"]=="custom") ? 'selected="selected"' : ''; ?>>Use Custom Message</option>
+							</select>
+						</div>
+					</div>
+				  <div class="form-group">
+				  	<label for="offline_message_backend" class="col-sm-3 control-label">Offline Message Backend</label>
+				    <div class="col-sm-8">
+							<!-- textarea name="data[offline_message_backend]" id="offline_message_backend" class="form-control" rows="3">< ?php echo ($data["system"]["offline_message_backend"]!="") ? $data["system"]["offline_message_backend"] : 'This site is down for maintenance. Please check back again soon.';?></textarea -->
+							<textarea name="data[offline_message_backend]" id="offline_message_backend" class="form-control" rows="3"><?php echo ($offline_message["offline_message_backend"]!="") ? $offline_message["offline_message_backend"] : 'This site is down for maintenance. Please check back again soon.';?></textarea>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				  	<label for="offline_message_frontend" class="col-sm-3 control-label">Offline Message Frontend</label>
+				    <div class="col-sm-8">
+							<!-- textarea name="data[offline_message_frontend]" id="offline_message_frontend" class="form-control" rows="3">< ?php echo ($data["system"]["offline_message_frontend"]!="") ? $data["system"]["offline_message_frontend"] : 'This site is down for maintenance.<br /> Please check back again soon.';?></textarea -->
+							<textarea name="data[offline_message_frontend]" id="offline_message_frontend" class="form-control" rows="3"><?php echo ($offline_message["offline_message_frontend"]!="") ? $offline_message["offline_message_frontend"] : 'This site is down for maintenance.<br /> Please check back again soon.';?></textarea>
+				    </div>
+				  </div>
+			  </div>
+			</div>
+
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-7">
+				<button type="button" id="btnSave" class="btnSave btn btn-primary">Save Changes</button>
+			</div>
+		</div>
+	</form>

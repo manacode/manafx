@@ -1,0 +1,128 @@
+	<form role="form" name="settingsForm" class="form form-horizontal" method="post" autocomplete="on">
+		<input type="hidden" name="option_identity" value="mail" />
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Send Mail</label>
+			<div class="col-sm-6">
+				<div class="btn-group" data-toggle="buttons">
+				  <label class="btn btn-default<?php echo ($data["mail"]["mail_sending"]=="off") ? ' active' : ''; ?>">
+				    <input type="radio" name="data[mail_sending]" id="mail_sending_off" autocomplete="off" value="off" <?php echo ($data["mail"]["mail_sending"]=="off") ? 'checked="checked"' : ''; ?> /> No
+				  </label>
+				  <label class="btn btn-default<?php echo ($data["mail"]["mail_sending"]=="on") ? ' active' : ''; ?>">
+				    <input type="radio" name="data[mail_sending]" id="mail_sending_on" autocomplete="off" value="on" <?php echo ($data["mail"]["mail_sending"]=="on") ? 'checked="checked"' : ''; ?> /> Yes
+				  </label>
+				</div>
+				<span class="help-block">Select Yes to turn on mail sending, select No to turn off mail sending. Warning: It is advised to put the site offline when disabling the mail function!</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Enable Mass Mail</label>
+			<div class="col-sm-6">
+				<div class="btn-group" data-toggle="buttons">
+				  <label class="btn btn-default<?php echo ($data["mail"]["mail_massmail"]=="off") ? ' active' : ''; ?>">
+				    <input type="radio" name="data[mail_massmail]" id="mail_massmail_off" autocomplete="off" value="off" <?php echo ($data["mail"]["mail_massmail"]=="off") ? 'checked="checked"' : ''; ?> /> No
+				  </label>
+				  <label class="btn btn-default<?php echo ($data["mail"]["mail_massmail"]=="on") ? ' active' : ''; ?>">
+				    <input type="radio" name="data[mail_massmail]" id="mail_massmail_on" autocomplete="off" value="on" <?php echo ($data["mail"]["mail_massmail"]=="on") ? 'checked="checked"' : ''; ?> /> Yes
+				  </label>
+				</div>
+				<span class="help-block">Select Yes to enable the Mass Mail Users function, select No to disabled.</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="mail_from_email" class="col-sm-3 control-label">From E-mail</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="mail_from_email" name="data[mail_from_email]" value="<?php echo $data["mail"]["mail_from_email"];?>" />
+				<span class="help-block">The email address that will be used to send site email.</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="mail_from_name" class="col-sm-3 control-label">From Name</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="mail_from_name" name="data[mail_from_name]" value="<?php echo $data["mail"]["mail_from_name"];?>" />
+				<span class="help-block">Text displayed in the header "From:" field when sending a site email. Usually the site name.</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="mail_mailer" class="col-sm-3 control-label">Mailer</label>
+			<div class="col-sm-6">
+				<select class="form-control" id="mail_mailer" name="data[mail_mailer]">
+					<option value="phpmail" <?php echo ($data["mail"]["mail_mailer"]=="phpmail") ? 'selected="selected"' : ''; ?> >PHP Mail</option>
+					<option value="sendmail" <?php echo ($data["mail"]["mail_mailer"]=="sendmail") ? 'selected="selected"' : ''; ?> >Sendmail</option>
+					<option value="smtp" <?php echo ($data["mail"]["mail_mailer"]=="smtp") ? 'selected="selected"' : ''; ?>>SMTP</option>
+				</select>
+				<span class="help-block">Select which mailer for the delivery of site email.</span>
+			</div>
+		</div>
+		
+		<div class="form-group mailer_sendmail">
+			<label for="mail_sendmail_path" class="col-sm-3 control-label">Sendmail Path</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="mail_sendmail_path" name="data[mail_sendmail_path]" value="<?php echo $data["mail"]["mail_sendmail_path"];?>" />
+				<span class="help-block">Enter the path to the sendmail program directory on the host server.</span>
+			</div>
+		</div>
+		
+		<div class="mailer_smtp">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">SMTP Authentication</label>
+				<div class="col-sm-6">
+					<div class="btn-group" data-toggle="buttons">
+					  <label class="btn btn-default<?php echo ($data["mail"]["mail_smtp_auth"]=="no") ? ' active' : ''; ?>">
+					    <input type="radio" name="data[mail_smtp_auth]" id="mail_smtp_auth_no" autocomplete="off" value="no" <?php echo ($data["mail"]["mail_smtp_auth"]=="no") ? 'checked="checked"' : ''; ?> /> No
+					  </label>
+					  <label class="btn btn-default<?php echo ($data["mail"]["mail_smtp_auth"]=="yes") ? ' active' : ''; ?>">
+					    <input type="radio" name="data[mail_smtp_auth]" id="mail_smtp_auth_yes" autocomplete="off" value="yes" <?php echo ($data["mail"]["mail_smtp_auth"]=="yes") ? 'checked="checked"' : ''; ?> /> Yes
+					  </label>
+					</div>
+					<span class="help-block">Select Yes if your SMTP Host requires SMTP Authentication.</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="mail_smtp_security" class="col-sm-3 control-label">SMTP Security</label>
+				<div class="col-sm-6">
+					<select class="form-control" id="mail_smtp_security" name="data[mail_smtp_security]">
+						<option value="none" <?php echo ($data["mail"]["mail_smtp_security"]=="none") ? 'selected="selected"' : ''; ?> >None</option>
+						<option value="SSL" <?php echo ($data["mail"]["mail_smtp_security"]=="SSL") ? 'selected="selected"' : ''; ?> >SSL</option>
+						<option value="TLS" <?php echo ($data["mail"]["mail_smtp_security"]=="TLS") ? 'selected="selected"' : ''; ?>>TLS</option>
+					</select>
+					<span class="help-block">Select the security model that your SMTP server uses.</span>
+				</div>
+			</div>
+	
+			<div class="form-group">
+				<label for="mail_smtp_host" class="col-sm-3 control-label">SMTP Host</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="mail_smtp_host" name="data[mail_smtp_host]" value="<?php echo $data["mail"]["mail_smtp_host"];?>" />
+					<span class="help-block">Enter the name of the SMTP host.</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="mail_smtp_port" class="col-sm-3 control-label">SMTP Port</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="mail_smtp_port" name="data[mail_smtp_port]" value="<?php echo $data["mail"]["mail_smtp_port"];?>" />
+					<span class="help-block">Enter the port number of your SMTP server. Use 25 for most unsecured servers, or 465 for most secure servers.</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="mail_smtp_username" class="col-sm-3 control-label">SMTP Username</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="mail_smtp_username" name="data[mail_smtp_username]" value="<?php echo $data["mail"]["mail_smtp_username"];?>" />
+					<span class="help-block">Enter the username for access to the SMTP host.</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="mail_smtp_password" class="col-sm-3 control-label">SMTP Password</label>
+				<div class="col-sm-6">
+					<input type="password" class="form-control" id="mail_smtp_password" name="data[mail_smtp_password]" value="<?php echo $data["mail"]["mail_smtp_password"];?>" />
+					<span class="help-block">Enter the password for access to the SMTP host.</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-7">
+				<button type="button" id="btnSave" class="btnSave btn btn-primary">Save Changes</button>
+			</div>
+		</div>
+	</form>

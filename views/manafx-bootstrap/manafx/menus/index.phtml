@@ -1,0 +1,136 @@
+<?php
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js")
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-list"></span> <?php echo $this->t->_("Menu Manager");?></h2>
+  <?php
+		$this->flashSession->output();
+	?>
+  <?php echo $this->gridToolbar->output(); ?>
+	<div class="table-responsive datagrid">
+		<table class="table footable table-hover table-condensed" data-page-size="<?php echo $this->config->public->grid_rows;?>" data-limit-navigation="5" data-filter="#search-filter">
+			<thead>
+			  <tr>
+          <th data-sort-ignore="true" class="col4checkbox"><input id="check-all" type="checkbox" /></th>
+		      <th data-type="numeric" data-ignore="true" data-hide="phone">Id</th>
+		      <th data-toggle="true">Name</th>
+		      <th data-toggle="true">Shortcode</th>
+		      <th data-toggle="true">Status</th>
+		      <th data-sort-ignore="true" data-hide="phone,tablet">Description</th>
+		      <?php if ($this->auth->edit) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+		      <?php if ($this->auth->delete) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+			  </tr>
+			</thead>
+			<tbody>
+			<?php foreach($menus as $menu) { ?>
+				<tr data-id="<?php echo $menu->menu_id;?>">
+          <td class="col4checkbox"><input class="check-rows" name="checked_id[]" type="checkbox" value="<?php echo $menu->menu_id;?>" /></td>
+					<td><?php echo $menu->menu_id;?></td>
+					<td><a href="menus/manage/<?php echo $menu->menu_key;?>"><?php echo $menu->menu_title;?></a></td>
+					<td><?php echo $menu->menu_key;?></td>
+					<td class="text-center"><?php
+							switch (strtoupper($menu->menu_status)) {
+								case "A":
+									echo '<span class="text-success">Active</span>';
+									break;
+								case "X":
+									echo '<strong class="text-danger">Disabled</strong>';
+									break;
+							}
+					?></td>
+					<td><?php echo $menu->menu_description;?></td>
+					<?php if ($this->auth->edit) { ?><td><button class="btnEdit btn btn-primary btn-xs" data-menu_id="<?php echo $menu->menu_id;?>" title="Edit `<?php echo $menu->menu_title;?>`"><span class="glyphicon glyphicon-edit"></span></button></td><?php }?>
+					<?php if ($this->auth->delete) { ?><td><button class="btnDelete btn btn-danger btn-xs" data-menu_id="<?php echo $menu->menu_id;?>" data-menutitle="<?php echo $menu->menu_title;?>" title="Delete `<?php echo $menu->menu_title;?>`"><span class="glyphicon glyphicon-remove"></span></button></td><?php }?>
+				</tr>
+			
+			<?php } ?>
+			</tbody>
+			<tfoot class="hide-if-no-paging">
+				<tr>
+					<td colspan="6">
+						<div class="text-center">
+							<ul class="pagination pagination-centered"></ul>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div><?php echo $pager;?></div>
+	
+</div>
+
+<div id="editMenu" class="add-edit-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel" data-title_edit="<?php echo $this->t->_("Edit Menu");?>" data-title_create="<?php echo $this->t->_("Create Menu");?>">Edit Menu</h4>
+      </div>
+      <div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="purpose" value="" />
+					<input type="hidden" id="menu_id" value="" />
+				  <div class="form-group">
+				    <label for="menu_title">Menu Name</label>
+				    <input type="text" class="form-control" id="menu_title" />
+				  </div>
+				  <div class="form-group">
+				    <label for="menu_key">Shortcode</label>
+				    <input type="text" class="form-control" id="menu_key" />
+				  </div>
+				  <div class="form-group">
+				    <label>Menu Status</label>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="menu_status" id="menu_status_a" value="A" checked="checked" />
+						    Active
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="menu_status" id="menu_status_x" value="X" />
+						    Disabled
+						  </label>
+						</div>
+				  </div>
+				  <div class="form-group">
+				    <label for="menu_description">Description</label>
+				    <input type="text" class="form-control" id="menu_description" />
+				  </div>
+				</form>
+				<div id="addeditMsg" class="alert alert-success hide"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-primary"><?php echo $this->t->_("Submit");?></button>
+        <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal"><?php echo $this->t->_("Close");?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deleteMenus" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel"><?php echo $this->t->_("Delete Menu Confirmation");?></h3>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="menu_id" value="" />
+				</form>
+				<p id="confirmDeleteMany" class="hidden"><?php echo $this->t->_("delete_menus" , "Are you sure you want to delete selected menus? Confirming will delete all their menu items.");?><br /> <span id="menutitle2delete"></span></p>
+				<p id="confirmDeleteOne" class="hidden"><?php echo $this->t->_("delete_menu" , "Are you sure you want to delete menu");?>: <strong id="menutitle2delete"></strong>?</p>
+			</div>
+			<div id="deleteMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary"><?php echo $this->t->_("Delete");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->t->_("Cancel");?></button>
+			</div>
+		</div>
+	</div>
+</div>

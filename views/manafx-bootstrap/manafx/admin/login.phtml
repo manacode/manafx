@@ -1,0 +1,21 @@
+<div class="container">
+	<h2 class="form-signin-heading"><?php echo $this->t->_('Signin');?></h2>
+  <?php
+		$this->flashSession->output();
+	?>
+  <form class="form form-signin" role="form" method="post">
+	  <div>
+			<?php echo $form->render("username", array('class'=>'form-control')) ?>
+		</div>
+			<?php echo $form->render("password", array('class'=>'form-control')) ?>
+		  <div class="checkbox">
+		  	<label>
+					<?php echo $form->render("remember") ?> <?php echo $this->t->_('Remember me');?>
+				</label>
+				<a class="pull-right" href="<?php echo $adminurl . '/recover';?>"><?php echo $this->t->_('Lost password');?>?</a>
+	    </div>
+	    <input type="hidden" name="http_referer" value="<?php echo isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';?>" />
+			<button id="btnSubmit" class="btn btn-primary btn-block" type="submit"><?php echo $this->t->_('Sign in');?></button>
+	    <?php echo $form->render("csrf", array('value' => $this->security->getToken())) ?>
+  </form>
+</div>

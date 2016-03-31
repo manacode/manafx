@@ -1,0 +1,130 @@
+<?php
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js");
+
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-user"></span> Users</h2>
+  <?php $this->flashSession->output(); ?>
+  <?php echo $this->gridToolbar->output(); ?>
+	<div class="table-responsive datagrid">
+		<table class="table footable table-hover table-condensed" data-page-size="<?php echo $this->config->public->grid_rows;?>" data-limit-navigation="5" data-filter="#search-filter">
+			<thead>
+			  <tr>
+          <th data-sort-ignore="true" class="col4checkbox"><input id="check-all" type="checkbox" /></th>
+		      <th data-type="numeric" data-ignore="true" data-hide="all">Id</th>
+		      <th data-toggle="true">Username</th>
+		      <th data-hide="phone">First Name</th>
+		      <th data-hide="phone">Last Name</th>
+		      <th>Email</th>
+		      <th data-sort-ignore="true" data-hide="tablet,phone">Roles</th>
+		      <th>Status</th>
+		      <?php if ($this->auth->edit) { ?><th data-sort-ignore="true" data-hide="xtablet,xphone" class="column-icon"></th><?php }?>
+		      <?php if ($this->auth->delete) { ?><th data-sort-ignore="true" data-hide="xtablet,xphone" class="column-icon"></th><?php }?>
+			  </tr>
+			</thead>
+			<tbody>
+			<?php foreach($users as $user) { ?>
+				<tr data-id="<?php echo $user->user_id;?>">
+					<td class="col4checkbox"><input class="check-rows" name="checked_id[]" type="checkbox" value="<?php echo $user->user_id;?>" /></td>
+					<td><?php echo $user->user_id;?></td>
+					<td><?php echo $user->user_username;?></td>
+					<td><?php echo $user->user_firstname;?></td>
+					<td><?php echo $user->user_lastname;?></td>
+					<td><?php echo $user->user_email;?></td>
+          <td><div class="barrier">
+          <?php
+          	$assoc_roles = toAssocArray($roles, 'role_id', 'role_name');
+          	$user_roles = CSVExplode($user->user_roles);
+          	echo '<ul>';
+	          foreach($user_roles as $role) {
+	          	if (isset($assoc_roles[$role])) {
+	          		echo "<li>" . $assoc_roles[$role] . "</li>";
+          		}
+	          }
+	          echo '</ul>';
+          ?>
+          </div></td>
+					<td class="text-center"><?php
+						$ut = $user->user_status;
+						switch ($ut) {
+							case "A":
+								echo '<span class="text-success">Active</span>';
+								break;
+							case "B":
+								echo '<strong class="text-danger">Banned</strong>';
+								break;
+							case "L":
+								echo '<strong class="text-warning">Locked</strong>';
+								break;
+							case "X":
+								echo "Pending";
+						}
+					?></td>
+					<?php if ($this->auth->edit) { ?><td><button class="btnEdit btn btn-primary btn-xs" data-user_id="<?php echo $user->user_id;?>" title="Edit `<?php echo $user->user_username;?>`"><span class="glyphicon glyphicon-edit"></span></button></td><?php }?>
+					<?php if ($this->auth->delete) { ?><td><button class="btnDelete btn btn-danger btn-xs" data-user_id="<?php echo $user->user_id;?>"  data-username="<?php echo $user->user_username;?>" title="Delete `<?php echo $user->user_username;?>`"><span class="glyphicon glyphicon-remove"></span></button></td><?php }?>
+				
+				</tr>
+			
+			<?php } ?>
+			</tbody>
+			<tfoot class="hide-if-no-paging">
+				<tr>
+					<td colspan="6">
+						<div class="text-center">
+							<ul class="pagination pagination-centered"></ul>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div><?php echo $pager;?></div>
+
+</div>
+
+<div id="addedit" class="add-edit-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+      </div>
+      <div class="modal-body">
+      	<form role="form" class="form form-horizontal" method="post" autocomplete="on">
+      		<?php include("usersForm.phtml");?>
+				</form>
+				<div id="addeditMsg" class="alert alert-success hidden"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
+        <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deleteUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Delete User(s)</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="user_id" value="" />
+				</form>
+				<p id="confirmDeleteMany" class="hidden">Are you sure you want to delete selected users? <br /> <span id="username2delete"></span></p>
+				<h6 id="confirmDeleteOne" class="hidden">Are you sure you want to delete user: <strong id="username2delete"></strong>?</h6>
+			</div>
+			<div id="deleteMsg" class="alert alert-danger hidden"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary">Delete</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

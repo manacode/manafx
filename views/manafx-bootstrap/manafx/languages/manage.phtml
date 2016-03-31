@@ -1,0 +1,147 @@
+<?php
+	$this->assets->addCss($templateUri . "/css/flags.css");
+	$this->assets->addCss($templateUri . "/common/bootstrap-select/css/bootstrap-select.min.css");
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/bootstrap-select/js/bootstrap-select.min.js")
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js");
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-globe"></span> <?php echo $this->t->_("Manage Language");?></h2>
+  <?php $this->flashSession->output(); ?>
+	<?php
+		$flang = strtolower($languageInfo['code']);
+		if (strlen($flang)>2) {
+			$flang = substr($flang, -2);
+		}
+	?>
+	<button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#LanguageInfo" aria-expanded="false" aria-controls="LanguageInfo">
+		<span class="glyphicon flag flag-<?php echo $flang;?>"> &nbsp;</span> <?php echo $languageInfo['name'];?>
+	</button>
+	<div class="collapse" id="LanguageInfo">
+	  <div class="well">
+	  	<a href="<?php echo $adminurl . "/languages/edit/" . $languageInfo['code'];?>" class="btn btn-default pull-right"><?php echo $this->t->_("Edit");?></a>
+		  <ul class="list-unstyled">
+	  	<?php foreach ($languageInfo as $key => $val) { ?>
+		    <li class="text-info"><strong><?php echo ucwords($key);?>: </strong><span class="list-group-item-text"><?php echo $val;?></span></li>
+	  	<?php } ?>
+	  	</ul>
+	  </div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
+	<?php echo $this->gridToolbar->output(); ?>
+	<div class="table-responsive datagrid">
+		<table class="table footable table-hover table-condensed" data-page-size="<?php echo $this->config->public->grid_rows;?>" data-limit-navigation="5" data-filter="#search-filter">
+			<thead>
+			  <tr>
+          <th data-sort-ignore="true" class="col4checkbox"><input id="check-all" type="checkbox" /></th>
+		      <th data-toggle="true">File Name</th>
+		      <th>Module </th>
+		      <th data-sort-ignore="true" data-hide="phone,tablet">Location</th>
+		      <?php if ($this->auth->edit) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+		      <?php if ($this->auth->delete) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+			  </tr>
+			</thead>
+			<tbody>
+			<?php foreach($languageFiles as $module => $langFiles) { ?>
+				<?php foreach($langFiles as $key => $val) { ?>
+					<tr data-id="<?php echo $val['filename'];?>">
+						<td class="col4checkbox"><input class="check-rows" name="checked_id[]" type="checkbox" value="<?php echo $val['filename'];?>" data-module="<?php echo $module;?>" /></td>
+						<td><?php echo $val['filename'];?></td>
+						<td class="text-center"><?php echo $module;?></td>
+						<td><?php echo $val['path'];?></td>
+						<?php if ($this->auth->edit) { ?><td><button class="btnEdit btn btn-primary btn-xs" data-filename="<?php echo $val['filename'];?>" data-module="<?php echo $module;?>" title="Edit `<?php echo $val['filename'];?>`"><span class="glyphicon glyphicon-edit"></span></button></td><?php }?>
+						<?php if ($this->auth->delete) { ?><td><button class="btnDelete btn btn-danger btn-xs" data-filename="<?php echo $val['filename'];?>" data-module="<?php echo $module;?>" title="Delete `<?php echo $val['filename'];?>`"><span class="glyphicon glyphicon-remove"></span></button></td><?php }?>
+					</tr>
+				<?php } ?>
+				
+			<?php } ?>
+			</tbody>
+			<tfoot class="hide-if-no-paging">
+				<tr>
+					<td colspan="6">
+						<div class="text-center">
+							<ul class="pagination pagination-centered"></ul>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+</div>
+
+<div id="editFiles" class="add-edit-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Language File</h4>
+      </div>
+      <div class="modal-body">
+				<form role="form" method="post" id="frmEditFile" action="<?php echo $adminurl . "/languages/translation";?>">
+					<input type="hidden" id="purpose" name="purpose" value="" />
+					<input type="hidden" id="languageCode" name="languageCode" value="<?php echo $languageInfo['code'];?>" />
+					<input type="hidden" id="languageFileName" name="languageFileName" value="" />
+					<div class="form-group">
+						<label for="languageModule">For Module</label>
+						<select class="form-control" id="languageModule" name="languageModule">
+							<option value="system">system</option>
+						<?php
+							foreach($this->config->application->active_modules as $module) {
+								echo '<option value="' . $module. '">';
+								echo $module;
+								echo '</option>';
+						  }
+					  ?>
+						</select>
+					</div>
+				  <div class="form-group">
+				    <label for="languageFileNameInput">File Name</label>
+						<div class="input-group">
+						  <span class="input-group-addon"><?php echo $languageInfo['code'];?>.</span>
+						  <input type="text" class="form-control" id="languageFileNameInput" aria-label="file name (after the language code)" />
+						  <span class="input-group-addon">.php</span>
+						</div>
+						<span id="helpBlock" class="help-block">
+							<ul class="list-unstyled">
+								<li><?php echo $this->t->_("helpblock_language_filename_global", "Leave filename empty for global autoloading.");?></li>
+								<li><?php echo $this->t->_("helpblock_language_filename_controller", "Use controller name as language filename for autoloading every time those controller called.");?>
+							<br /> ie enter: <strong><i>controllername</i></strong> for <?php echo $languageInfo['code'];?>.controllername.php</li>
+							</ul>
+						</span>
+					</div>
+				</form>
+				<div id="addeditMsg" class="alert alert-success hide"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnCreate" class="btn btn-primary"><?php echo $this->t->_("create_edit", "Create &amp; Edit");?></button>
+        <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal"><?php echo $this->t->_("Close");?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deleteLanguageFiles" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel"><?php echo $this->t->_("Delete Language Files Confirmation");?></h3>
+			</div>
+			<div class="modal-body">
+			  <form name="frmDelete" method="post" class="form-horizontal" action="<?php echo $adminurl . "/languages/delete";?>">
+			  	<input type="hidden" name="languageFiles" />
+				</form>
+				<p id="confirmDeleteMany" class="hidden"><?php echo $this->t->_("delete_language_files", "Are you sure you want to delete selected language files?");?> <br /> <span id="files2delete"></span></p>
+				<p id="confirmDeleteOne" class="hidden"><?php echo $this->t->_("delete_language_file", "Are you sure you want to delete language file");?>: <strong id="files2delete"></strong>?</p>
+			</div>
+			<div id="deleteMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary"><?php echo $this->t->_("Delete");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->t->_("Cancel");?></button>
+			</div>
+		</div>
+	</div>
+</div>

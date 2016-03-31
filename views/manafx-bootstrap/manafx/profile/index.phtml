@@ -1,0 +1,107 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-education"></span> Profile</h2>
+  <?php $this->flashSession->output();?>
+
+	<div class="col-sm-9 col-md-9">
+  	<form role="form" name="frmProfile" class="form form-horizontal" method="post" action="<?php echo $adminurl . "/profile/update-profile";?>" autocomplete="off">
+		
+			<div class="form-group">
+				<label for="user_username" class="col-sm-3 control-label">Username</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_username") ?>
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label for="user_firstname" class="col-sm-3 control-label">First Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_firstname") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_lastname" class="col-sm-3 control-label">Last Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_lastname") ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="user_email" class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_email") ?>
+				</div>
+			</div>
+
+
+<?php
+/*
+	if ($usermeta) {
+		foreach($usermeta as $meta) {
+			$usermeta_key = $meta->usermeta_key;
+			$usermeta_value = $meta->usermeta_value;
+			echo '<div class="form-group">';
+			echo '	<label for="' . $usermeta_key . '" class="col-sm-3 control-label">' . $usermeta_key . '</label>';
+			echo '	<div class="col-sm-6">';
+			echo '		<input type="text" id="' . $usermeta_key . '" name="usermeta[' . $usermeta_key . ']" class="form-control" value="' . $usermeta_value . '" />';
+			echo '	</div>';
+			echo '</div>';
+		}
+	}
+	*/
+?>
+
+			<!-- custom profile -->
+			<div class="form-group">
+				<label for="user_website" class="col-sm-3 control-label">Website</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" autocomplete='off' id="user_website" name="usermeta[website]" value="<?php echo (isset($profile['website']) ? $profile['website'] : "");?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<hr />
+				</div>
+			</div>
+			
+			<!-- confirmation password -->
+			<input type="hidden" class="form-control store-password" id="user_password" name="user_password" />
+			
+			<!-- div class="form-group">
+				<label for="user_password" class="col-sm-3 control-label">Current Password</label>
+				<div class="col-sm-6">
+					< ?php echo $form->render("user_password") ?>
+				</div>
+			</div -->
+			
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-6">
+					<button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		
+		</form>
+	</div>
+</div>
+
+<div id="confirmPasswordDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Confirm Password</h3>
+			</div>
+			<div class="modal-body">
+			  <div class="form-group">
+			    <label for="confirm_password">Enter Your Current Password</label>
+			    <input type="password" class="form-control" id="confirm_password" placeholder="Enter Password" />
+			  </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

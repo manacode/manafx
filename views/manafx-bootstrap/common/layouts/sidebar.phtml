@@ -1,0 +1,74 @@
+<?php
+	if (!isset($is_sidebar) || !$is_sidebar) {
+		return;
+	}
+?>
+<div id="sidebar">
+
+	<div class="sidebar-content">
+	<?php
+		if (isset($adminSidebarMenu) && ($adminSidebarMenu)) {
+			foreach($adminSidebarMenu as $menu_key => $menu) {
+				$caption = '';
+				if (isset($menu['caption'])) {
+					$caption = $menu['caption'];
+				}
+				$action = isset($menu['action']) ? $menu['action'] : "";
+				$beforeCaption = isset($menu['beforeCaption']) ? $menu['beforeCaption'] . ' ' : "";
+				$data_target = "";
+				if (isset($menu['submenus'])) {
+					$data_target = "sbmenu-" . $menu_key;
+				}
+				if ($data_target!="") {
+					if (isset($menu['active'])) {
+						$attribute = 'class="btn btn-primary nav-header" data-toggle="collapse" aria-expanded="true" data-target="#' . $data_target . '"';
+					} else {
+						$attribute = 'class="btn btn-primary nav-header collapsed" data-toggle="collapse" aria-expanded="false" data-target="#' . $data_target . '"';
+					}
+					echo '<button type="button" ' . $attribute . '>';
+				} else {
+					if ($action!="") {
+						echo '<a href="' . $action . '" class="btn btn-primary nav-header collapsed">';
+					} else {
+						echo '<button href="/admin/users" type="button" class="btn btn-primary nav-header collapsed">';
+					}
+				}
+				echo $beforeCaption . $caption;
+	
+				if ($action!="") {
+					echo '</a>';
+				} else {
+					echo '</button>';
+				}
+	
+				if ($data_target!="") {
+					$submenus = $menu['submenus'];
+					$class_active = isset($menu['active']) ? " in" : "";
+					echo '<div id="' . $data_target . '" class="collapse' . $class_active . '">';
+					echo '<ul class="nav nav-list">';
+					foreach ($submenus as $submenu_key => $submenu) {
+						$sub_caption = $submenu['caption'];
+						$sub_action = isset($submenu['action']) ? $submenu['action'] : "";
+						$sub_class = isset($submenu['class']) ? $submenu['class'] : "";
+						$sub_beforeCaption = isset($submenu['beforeCaption']) ? $submenu['beforeCaption'] . ' ' : "";
+						if (isset($submenu['divider']) && $submenu['divider']) {
+							echo '<li class="nav-divider"></li>';
+						}
+						if ($sub_action!="") {
+							$sub_class_active = isset($submenu['active']) ? ' class="active"' : "";
+							echo '<li' . $sub_class_active . '><a href="' . $sub_action . '">' . $sub_beforeCaption . $sub_caption . '</a></li>';
+						} else {
+							echo '<li class="' . $sub_class . '">' . $sub_beforeCaption . $sub_caption . '</li>';
+						}
+					}
+	
+					echo '</ul>';
+					echo '</div>';
+	
+				}
+			}
+		}
+	?>
+	</div>
+</div>
+<a href="javascript:void(0)" id="sidebar-toggler" class="sidebar-on" data-target="#wrapper-content, #wrapper-footer"><span class="glyphicon glyphicon-hand-left" class-on="glyphicon-hand-left" class-off="glyphicon-hand-right"></span></a>

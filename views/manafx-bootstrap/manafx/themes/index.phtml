@@ -1,0 +1,157 @@
+<?php
+		$headerfooter->add_css(array(
+			array(
+				"path" => 'templates/' . $current_template . "/css/image-hover-ie7.css",
+				"priority" => 0,
+				"condition" => "IE 7"
+			),
+			array(
+				"path" => 'templates/' . $current_template . "/css/image-hover-ie8.css",
+				"priority" => 0,
+				"condition" => "IE 8"
+			)
+		));
+		
+	$active_template = $templates[$current_template];
+	$active_screenshot = $active_template['screenshot'];
+	if ($active_template['themes'][$current_theme]['screenshot']!=="") {
+		$active_screenshot = $active_template['themes'][$current_theme]['screenshot'];
+	}
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-phone"></span> Templates</h2>
+  <?php $this->flashSession->output(); ?>
+  <h3>Current Template</h3>
+	<div class="current-theme">
+		<div class="col-sm-6 col-md-4">
+			<div class="thumbnail">
+				<img id="active-screenshot" class="media-object" src="<?php echo $active_screenshot;?>" alt="<?php echo $active_template['name'];?>" />
+			</div>
+		</div>
+		<div class="media-body">
+			<h4><?php echo $active_template['name'];?> <span class="small">Version: <?php echo$active_template['version'];?></span></h4>
+			<p>By <a href="<?php echo $active_template['author_uri'];?>"><?php echo $active_template['author'];?></a></p>
+			<p><?php echo $active_template['description'];?></p>
+			<p class="small"><b>Tags</b>: <span class="text-muted"><?php echo $active_template['tags'];?></span></p>
+			<div class="form-group">
+				<label class="control-label" for="inputSuccess1">Available Themes</label>
+				<select id="theme-selector" class="form-control" style="max-width: 200px;">
+				<?php
+					foreach ($active_template['themes'] as $theme => $det) {
+						if ($theme==$current_theme) {
+							$selected = ' selected="selected"';
+						} else {
+							$selected = '';
+						}
+				  	echo '<option value="' . $theme . '" data-screenshot="'. $det['screenshot'] . '"' . $selected . '>' . $theme . '</option>';
+		  		}
+	  		?>
+				</select>
+			</div>
+			<button id="btnApplyTheme" type="button" class="btn btn-default .btnActivate">Apply Theme</button>
+		</div>
+	</div>
+  <div class="clearfix"></div>
+	<hr  />
+  <h3>Available Templates</h3>
+  <?php
+  	if (count($templates)<2) {
+  		echo '<p class="form-control input">NONE</p>';
+ 		} else {
+	  	foreach ($templates as $template => $items) {
+	  		if ($template!=$current_template) {
+		  		$screenshot = $items['screenshot'];
+		  		$name = $items['name'];
+		  		$version = $items['version'];
+		  		$author = $items['author'];
+		  		$author_uri = $items['author_uri'];
+		  		$description = $items['description'];
+		  		$tags = $items['tags'];
+		  		$themes = $items['themes'];
+		  		$first_theme = array_keys($themes)[0];
+	?>
+  <div class="col-sm-6 col-md-4">
+  	<div class="thumbnail">
+  		<div class="image-hover img-inner-shadow img-button-hover button-effect">
+  			<img src="<?php echo $screenshot;?>" />
+  			<div class="layer">
+  				<div class="btngroup" data-template="<?php echo $template;?>" data-theme="<?php echo $first_theme;?>">
+	  				<a href="#" class="btnActivate btn btn-primary" role="button">Activate</a>
+						<a href="#" class="btnDetails btn btn-default" role="button">Theme Details</a>
+					</div>
+  			</div>
+  		</div>
+  		<div class="caption">
+  		
+  			<h4><?php echo $name;?><span class="small pull-right">Version: <?php echo $version;?></span></h4>
+  			
+  			<p>By <a href="<?php echo $author_uri;?>"> <?php echo $author;?></a></p>
+  			<p class="hide"><?php echo $description;?></p>
+  			<p class="small hide"><b>Tags</b>: <?php echo $tags;?></p>
+			</div>
+  	</div>
+  </div>
+  <?php
+  			}
+			}
+ 		}
+	?>
+	<form name="frmActivate" role="form" method="post" action="<?php echo "/themes/activate";?>">
+		<input type="hidden" id="template2activate" name="template2activate" />
+		<input type="hidden" id="theme2activate" name="theme2activate" />
+	</form>
+	
+	<form name="frmDelete" role="form" method="post" action="<?php echo "/themes/delete";?>">
+		<input type="hidden" id="template2delete" name="template2delete" />
+	</form>
+	
+	<script type='text/javascript'>
+	<?php
+		$js_templates = json_encode($templates);
+		echo "var templates = ". $js_templates . ";\n";
+	?>
+	</script>
+
+
+</div>
+
+<div id="templatedetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Template Details</h3>
+			</div>
+			<div class="modal-body">
+				<div class="template-details">
+				</div>
+			</div>
+			<div id="alertMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDelete" class="btn btn-danger pull-left">Delete</button>
+				<button type="button" id="btnActivateNow" class="btn btn-primary">Activate</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="deleteTemplate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Delete Template Confirmation</h3>
+			</div>
+			<div class="modal-body">
+				<p>Delete "<span id="template_id"></span>" template?</p>
+				<p class="text-warning">Warning: this will delete all files for selected template.</p>
+			</div>
+			<div id="alertMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary">Delete</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

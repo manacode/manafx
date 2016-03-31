@@ -1,0 +1,125 @@
+<?php
+	$headerfooter->add_css(array(
+		array(
+			"path" => $templateUri . "/css/image-hover-ie7.css",
+			"priority" => 0,
+			"condition" => "IE 7"
+		),
+		array(
+			"path" => $templateUri . "/css/image-hover-ie8.css",
+			"priority" => 0,
+			"condition" => "IE 8"
+		),
+	));
+	$this->assets->addCss($templateUri . "/css/flags.css");
+	$this->assets->addCss($templateUri . "/common/bootstrap-select/css/bootstrap-select.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/bootstrap-select/js/bootstrap-select.min.js");
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-globe"></span> <?php echo $this->t->_("Languages");?></h2>
+  <?php $this->flashSession->output(); ?>
+  <?php if ($this->auth->create) { ?>
+	<h3><?php echo $this->t->_("Create Language");?></h3>
+  <form method="post" action="<?php echo $adminurl . "/languages/create";?>">
+    <input type="hidden" name="create" value="create" />
+	  <div class="col-xs-12 col-sm-4 col-md-3">
+		  <div class="row">
+			  <div class="form-group">
+			  	<label for="country-selector"><?php echo $this->t->_("Country");?></label>
+			    <select id="country-selector" class="form-control selectpicker show-tick" data-live-search="true" data-container="#wrapper-content" title="<?php echo $this->t->_("Select country");?> ...">
+				  <?php
+				  	header('Content-Type: text/html; charset=ISO-8859-1');
+				  	foreach ($countryList as $continent => $languages) {
+				  		echo "<optgroup label='$continent'>";
+				  		foreach ($languages as $key => $language) {
+					  		$flang = strtolower($key);
+					  		if (strlen($flang)>2) {
+					  			$flang = substr($flang, -2);
+				  			}
+								echo "<option data-icon='flag flag-$flang' value='$flang'>";
+								echo "$language</option>";
+							}
+							echo '</optgroup>';
+				 		}
+					?>
+			    </select>
+		  	</div>
+	  	</div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageCode"><?php echo $this->t->_("Language Code");?></label>
+		    	<input type="text" class="form-control" id="languageCode" name="languageInfo[code]" placeholder="ie: en-GB" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageName"><?php echo $this->t->_("Language Name");?></label>
+		    	<input type="text" class="form-control" id="languageName" name="languageInfo[name]" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			  	<label><?php echo $this->t->_("Language Direction");?></label>
+			  	<div class="form-control">
+						<label class="radio-inline">
+						  <input type="radio" name="languageInfo[rtl]" id="directionLTR" value="0" checked="checked" /> LTR
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="languageInfo[rtl]" id="directionRTL" value="1" /> RTL
+						</label>
+					</div>
+		  	</div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageVersion"><?php echo $this->t->_("Version");?></label>
+		    	<input type="text" class="form-control" id="languageVersion" name="languageInfo[version]" value="1.0.1" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageAuthor"><?php echo $this->t->_("Author");?></label>
+		    	<input type="text" class="form-control" id="languageAuthor" name="languageInfo[author]" />
+			  </div>
+	    </div>
+  	</div>
+	  <div class="col-xs-12 col-sm-7 col-sm-offset-1 col-md-8 col-md-offset-1">
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageAuthorUri"><?php echo $this->t->_("Author Uri");?></label>
+		    	<input type="text" class="form-control" id="languageAuthorUri" name="languageInfo[author_uri]" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageDescription"><?php echo $this->t->_("Description");?></label>
+		    	<input type="text" class="form-control" id="languageDescription" name="languageInfo[description]" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageLocale"><?php echo $this->t->_("Locale");?></label>
+		    	<input type="text" class="form-control" id="languageLocale" name="languageInfo[locale]" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageLicense"><?php echo $this->t->_("License");?></label>
+		    	<input type="text" class="form-control" id="languageLicense" name="languageInfo[license]" value="GPL-2.0+" />
+			  </div>
+	    </div>
+		  <div class="row">
+			  <div class="form-group">
+			    <label for="languageLicenseUri"><?php echo $this->t->_("License Uri");?></label>
+		    	<input type="text" class="form-control" id="languageLicenseUri" name="languageInfo[license_uri]" value="http://www.gnu.org/licenses/gpl-2.0.html" />
+			  </div>
+	    </div>
+		  <div class="row">
+		    <button id="btnSubmit" class="btn btn-primary" type="button" disabled="disabled"><?php echo $this->t->_("Submit");?></button>
+	    </div>
+    </div>
+	</form>
+	<?php }?>
+</div>

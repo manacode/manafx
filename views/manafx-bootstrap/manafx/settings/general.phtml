@@ -1,0 +1,28 @@
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-cog"></span> General Settings</h2>
+	<div class="col-sm-10">
+		<?php
+			$this->flashSession->output();
+		?>
+		<div>
+	    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+	      <li role="presentation" class="<?php echo ($option_identity=="application") ? 'active' : ''; ?>"><a href="#application" id="application-tab" role="tab" data-toggle="tab" aria-controls="application" aria-expanded="false">Application</a></li>
+	      <li role="presentation" class="<?php echo ($option_identity=="system") ? 'active' : ''; ?>"><a href="#system" id="system-tab" role="tab" data-toggle="tab" aria-controls="system" aria-expanded="true">System</a></li>
+	      <li role="presentation" class="<?php echo ($option_identity=="mail") ? 'active' : ''; ?>"><a href="#mail" id="mail-tab" role="tab" data-toggle="tab" aria-controls="mail" aria-expanded="true">Mail</a></li>
+	    </ul>
+	    <div id="myTabContent" class="tab-content">
+	      <div role="tabpanel" class="tab-pane fade<?php echo ($option_identity=="application") ? ' active in' : ''; ?>" id="application" aria-labelledby="application-tab">
+	        <?php include "setting-application.phtml";?>
+	      </div>
+	      <div role="tabpanel" class="tab-pane fade<?php echo ($option_identity=="system") ? ' active in' : ''; ?>" id="system" aria-labelledby="system-tab">
+	        <?php include "setting-system.phtml";?>
+	      </div>
+	      <div role="tabpanel" class="tab-pane fade<?php echo ($option_identity=="mail") ? ' active in' : ''; ?>" id="mail" aria-labelledby="mail-tab">
+	        <?php include "setting-mail.phtml";?>
+	      </div>
+	    </div>
+	  </div>
+				
+	</div>
+
+</div>

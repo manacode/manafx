@@ -1,0 +1,75 @@
+			<input type="hidden" id="purpose" value="add" />
+			<?php echo $form->render("user_id") ?>
+			
+			<div class="form-group">
+				<label for="user_firstname" class="col-sm-3 control-label">First Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_firstname") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_lastname" class="col-sm-3 control-label">Last Name</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_lastname") ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="user_email" class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_email") ?>
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<hr />
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label for="user_username" class="col-sm-3 control-label">Username</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_username") ?>
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label for="user_password" class="col-sm-3 control-label">Password</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_password") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_password" class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<div class="progress">
+					  <div id="pwstrength" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+					  </div>
+					</div>
+		    </div>
+			</div>
+		
+			<div id="confirmation" class="form-group">
+				<label for="user_password" class="col-sm-3 control-label">Confirm Password</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("confirm_pass") ?>
+					<span class="glyphicon form-control-feedback"></span>
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label for="user_roles" class="col-sm-3 control-label">Roles</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_roles") ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="user_status" class="col-sm-3 control-label">Status</label>
+				<div class="col-sm-6">
+					<?php echo $form->render("user_status") ?>
+				</div>
+			</div>

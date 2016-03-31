@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+	<code>en-US</code>
+	<name>English (en-US)</name>
+	<rtl>0</rtl>
+	<version>1.6.8</version>
+	<creation_date>2016-01-01</creation_date>
+	<author>manacode</author>
+	<author_uri>https://github.com/manacode</author_uri>
+	<locale>en_US.utf8, en_US.UTF-8, en_US, eng_US, en, english, english-us, us, usa, united state</locale>
+	<description>en-US site language</description>
+	<license>GPL-2.0+</license>
+	<license_uri>http://www.gnu.org/licenses/gpl-2.0.html</license_uri>
+</language>

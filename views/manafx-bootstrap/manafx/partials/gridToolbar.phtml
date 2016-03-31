@@ -1,0 +1,31 @@
+<div id="gridToolBar">
+  <form class="form-inline" role="form">
+	    <div class="form-group">
+	      <div class="btn-group group-crud">
+	      	<?php if ($this->auth->create) { ?><button type="button" id="add-me" class="btnAdd btn btn-sm btn-default">Add New</button><?php }?>
+		      <?php if ($this->auth->edit) { ?><button type="button" id="edit-me" class="btnEdit btn btn-sm btn-default req-single-item" disabled="disabled">Edit</button><?php }?>
+	        <?php if ($this->auth->delete) { ?><button type="button" id="delete-me" class="btnDelete btn btn-sm btn-default req-any-item" disabled="disabled">Delete</button><?php }?>
+				</div>
+			</div>
+			<div class="form-group">
+        <div class="input-group group-search">
+          <input class="form-control input-sm" id="search-filter" type="text" />
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default btn-sm" aria-label="Search" tabindex="-1"><span class="glyphicon glyphicon-search"></span></button>
+ 			    	<a href="#clear" class="btn btn-default btn-sm clear-filter">
+			    		<span class="glyphicon glyphicon-remove"></span> Clear
+			    	</a>
+          </div>
+        </div>
+			</div>
+			<div class="form-group">
+        <div class="input-group group-grid">
+          <input class="form-control input-sm" id="page-size" type="text" size="3" value="<?php echo $this->config->public->grid_rows;?>" data-toggle="popover" data-container="body" data-trigger="focus" data-placement="bottom" data-content="Please enter a number." />
+          <div class="input-group-btn">
+            <button id="change-page-size" class="btn btn-default btn-sm" tabindex="-1"><span class="glyphicon glyphicon-list"></span></button>
+          </div>
+        </div>
+	   	</div>
+  </form>
+</div>
+<div class="clearfix">&nbsp;</div>

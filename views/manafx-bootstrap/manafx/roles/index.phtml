@@ -1,0 +1,154 @@
+<?php
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js")
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-fire"></span> User Roles</h2>
+  <?php
+		$this->flashSession->output();
+	?>
+  <?php echo $this->gridToolbar->output(); ?>
+	<div class="table-responsive datagrid">
+		<table class="table footable table-hover table-condensed" data-page-size="<?php echo $this->config->public->grid_rows;?>" data-limit-navigation="5" data-filter="#search-filter">
+			<thead>
+			  <tr>
+          <th data-sort-ignore="true" class="col4checkbox"><input id="check-all" type="checkbox" /></th>
+		      <th data-type="numeric" data-ignore="true" data-hide="all">Id</th>
+		      <th data-toggle="true">Name</th>
+		      <th>Status</th>
+		      <th data-sort-ignore="true" data-hide="phone,tablet">Description</th>
+		      <?php if ($this->auth->edit) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+		      <?php if ($this->auth->delete) { ?><th data-sort-ignore="true" class="column-icon"></th><?php }?>
+			  </tr>
+			</thead>
+			<tbody>
+			<?php foreach($roles as $role) { ?>
+				<tr data-id="<?php echo $role->role_id;?>" class="<?php echo ($role->role_id < 11) ? 'default-system-role' : '';?>">
+
+          <?php if ($role->role_id>10) { ?>
+            <td class="col4checkbox"><input class="check-rows" name="checked_id[]" type="checkbox" value="<?php echo $role->role_id;?>" /></td>
+          <?php } else { ?>
+            <td class="col4checkbox"><input class="disabled" type="checkbox" disabled="disabled" /></td>
+          <?php } ?>
+									
+					<td><?php echo $role->role_id;?></td>
+					<td><?php echo $role->role_name;?></td>
+					<td><?php
+							switch (strtoupper($role->role_status)) {
+								case "A":
+									echo '<span class="text-success">Active</span>';
+									break;
+								case "R":
+									echo '<span class="text-default">Reserved</span>';
+									break;
+								case "S":
+									echo '<span class="text-warning">System</span>';
+									break;
+								case "X":
+									echo '<span class="text-danger">Disabled</span>';
+									break;
+							}
+					?></td>
+					<td><?php echo $role->role_description;?></td>
+					
+          <?php if ($role->role_status != "S") { ?>
+						<?php if ($this->auth->edit) { ?><td><button class="btnEdit btn btn-primary btn-xs" data-role_id="<?php echo $role->role_id;?>" title="Edit `<?php echo $role->role_name;?>`"><span class="glyphicon glyphicon-edit"></span></button></td><?php }?>
+						<?php if ($this->auth->delete) { ?><td><button class="btnDelete btn btn-danger btn-xs" data-role_id="<?php echo $role->role_id;?>" data-rolename="<?php echo $role->role_name;?>" title="Delete `<?php echo $role->role_name;?>`"><span class="glyphicon glyphicon-remove"></span></button></td><?php }?>
+	        <?php } else { ?>
+	        	<?php if ($this->auth->edit) { ?><td>&nbsp;</td><?php }?>
+	        	<?php if ($this->auth->delete) { ?><td>&nbsp;</td><?php }?>
+          <?php } ?>
+				</tr>
+			
+			<?php } ?>
+			</tbody>
+			<tfoot class="hide-if-no-paging">
+				<tr>
+					<td colspan="6">
+						<div class="text-center">
+							<ul class="pagination pagination-centered"></ul>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div><?php echo $pager;?></div>
+	
+</div>
+
+<div id="editRole" class="add-edit-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Edit Role</h4>
+      </div>
+      <div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="purpose" value="" />
+					<input type="hidden" id="role_id" value="" />
+				  <div class="form-group">
+				    <label for="role_name">Role Name</label>
+				    <input type="text" class="form-control" id="role_name" />
+				  </div>
+				  <div class="form-group">
+				    <label for="role_value">Role Status</label>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="role_status" id="role_status_a" value="A" checked="checked" />
+						    Active
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="role_status" id="role_status_x" value="X" />
+						    Disabled
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="role_status" id="role_status_r" value="R" />
+						    Reserved
+						  </label>
+						</div>
+				  </div>
+				  <div class="form-group">
+				    <label for="role_description">Description</label>
+				    <input type="text" class="form-control" id="role_description" />
+				  </div>
+				</form>
+				<div id="addeditMsg" class="alert alert-success hide"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-primary">Save changes</button>
+        <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deleteRoles" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Delete Role(s)</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="role_id" value="" />
+				</form>
+				<p id="confirmDeleteMany" class="hidden">Are you sure you want to delete selected roles? <br /> <span id="rolename2delete"></span></p>
+				<p id="confirmDeleteOne" class="hidden">Are you sure you want to delete role: <strong id="rolename2delete"></strong>?</p>
+			</div>
+			<div id="deleteMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary">Delete</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

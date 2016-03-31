@@ -1,0 +1,181 @@
+<?php
+	$this->assets->addCss($templateUri . "/common/footable/css/footable.core.min.css");
+	$this->assets->addCss($templateUri . "/common/bootstrap-select/css/bootstrap-select.min.css");
+	$this->assets
+	    ->collection('header-dynamic')
+	    ->addJs($templateUri . "/common/footable/js/footable.all.min.js")
+	    ->addJs($templateUri . "/common/bootstrap-select/js/bootstrap-select.min.js");
+
+
+#echo "<pre>";
+#var_dump($api->ip_address);
+#echo "</pre>";
+#exit();
+
+?>
+<div class="col-sm-12 col-md-12">
+  <h2 class="page-header"><span class="glyphicon glyphicon-fire"></span> <?php echo $this->t->_("API Manager");?></h2>
+  <?php
+		$this->flashSession->output();
+	?>
+	<p>The HTTP API provides a simple way to integrate the functionality of our platform with your Storefront, Control Panel or Application. Get started by reading the API Documentation</p>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">API Key</h3>
+			  </div>
+			  <div class="panel-body">
+			  	<p>Use the API key below to make calls to our system.</p>
+					<button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#api-box" aria-expanded="false" aria-controls="api-box">
+					  Show API Key
+					</button>
+					<div class="collapse" id="api-box">
+					<p></p>
+					  <div id="api-key" class="well well-sm" contenteditable="true" onfocus="document.execCommand('selectAll',false,null);"><?php echo $api->api_key;?></div>
+						<a href="<?php echo $adminurl . "/api/index/regenerate";?>" id="regenerate" >Regenerate</a>
+					</div>
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+		  <form role="form" class="form" method="post" action="<?php echo $adminurl . "/api/index/whitelistIp";?>" autocomplete="on">
+			  <div class="form-group">
+					<div class="panel-group" id="accordionMeta" role="tablist" aria-multiselectable="false">
+					  <div class="panel panel-default">
+					    <div class="panel-heading" role="tab" id="headingOne">
+					      <h4 class="panel-title">
+					        <a role="button" data-toggle="collapse" data-parent="#accordionMeta" href="#panelMeta" aria-expanded="true" aria-controls="panelMeta">
+					          Whitelist your IP Addresses
+					        </a>
+					      </h4>
+					    </div>
+					    <div id="panelMeta" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+					      <div class="panel-body">
+									<p>Before you can make API calls to our system, you must whitelist the IP addresses from where your calls will be made. Note: IP ranges and netblocks are not accepted.</p>
+					      	<div class="table-responsive">
+										<table id="ip-address-list" class="table table-condensed">
+											<thead>
+												<tr>
+													<th>IP Address</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+											<?php foreach ($api->ip_address as $ipaddress) { ?>
+												<tr>
+													<td><input class="form-control input-ip-address" placeholder="IP Address" name="ipaddress[]" value="<?php echo $ipaddress;?>" readonly="readonly" /></td>
+													<td><button type="button" class="deleteip btn btn-default">Remove</button></td>
+												</tr>
+											<?php }?>
+											</tbody>
+										</table>
+									</div>
+									<button type="submit" id="btn-save-ip" class="btn btn-primary">Save whitelisted IP addresses</button>
+									<hr />
+									<div class="clearfix">
+						        <p><strong><?php echo $this->t->_("Add New IP Address", "ADD NEW IP ADDRESS");?></strong></p>
+						        <div class="simple-error"><?php echo $this->t->_("ip_not_valid", "IP address is not valid or may already used.");?></div>
+										<table class="table table-condensed">
+											<thead>
+												<tr>
+													<th>IP Address</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+													  <div>
+													    <label for="ip-address" class="sr-only"><?php echo $this->t->_("IP Address");?></label>
+													    <input type="text" class="form-control" id="ip-address"/>
+													  </div>
+													</td>
+													<td>
+												  	<button type="button" class="btn btn-default add-ip-address">Add IP Address</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+			  	</div>
+		  	</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editTag" class="add-edit-modal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel" data-title_edit="<?php echo $this->t->_("Edit Tag");?>" data-title_create="<?php echo $this->t->_("Add New Tag");?>">Edit Tag</h4>
+      </div>
+      <div class="modal-body">
+				<form role="form" action="<?php echo $adminurl;?>">
+					<input type="hidden" id="purpose" value="" />
+					<input type="hidden" id="tag_id" value="" />
+				  <div class="form-group">
+				    <label for="tag_name">Tag Name</label>
+				    <input type="text" class="form-control" id="tag_name" />
+				  </div>
+				  <div class="form-group">
+				    <label for="tag_slug">Slug</label>
+				    <input type="text" class="form-control" id="tag_slug" />
+				  </div>
+				  <div class="form-group">
+				    <label>Status</label>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="tag_status" id="tag_status_a" value="A" checked="checked" />
+						    Active
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="tag_status" id="tag_status_x" value="X" />
+						    Disabled
+						  </label>
+						</div>
+				  </div>
+				  <div class="form-group">
+				    <label for="tag_description">Description</label>
+				    <textarea class="form-control" id="tag_description"></textarea>
+				  </div>
+				</form>
+				<div id="addeditMsg" class="alert alert-success hide"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-primary"><?php echo $this->t->_("Submit");?></button>
+        <button type="button" id="btnClose" class="btn btn-default" data-dismiss="modal"><?php echo $this->t->_("Close");?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deleteTags" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel"><?php echo $this->t->_("Delete Tag Confirmation");?></h3>
+			</div>
+			<div class="modal-body">
+				<form role="form">
+					<input type="hidden" id="tag_id" value="" />
+				</form>
+				<p id="confirmDeleteMany" class="hidden"><?php echo $this->t->_("delete_tags" , "Are you sure you want to delete selected tags?");?><br /> <span id="tagname2delete"></span></p>
+				<p id="confirmDeleteOne" class="hidden"><?php echo $this->t->_("delete_tag" , "Are you sure you want to delete tag");?>: <strong id="tagname2delete"></strong>?</p>
+			</div>
+			<div id="deleteMsg" class="alert alert-danger hide"></div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteNow" class="btn btn-primary" class="btn btn-primary"><?php echo $this->t->_("Delete");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo $this->t->_("Cancel");?></button>
+			</div>
+		</div>
+	</div>
+</div>

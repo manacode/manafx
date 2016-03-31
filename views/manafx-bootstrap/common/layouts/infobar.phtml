@@ -1,0 +1,14 @@
+<?php
+	if (!isset($adminInfobar) || $adminInfobar===false) {
+		return;
+	}
+?>
+<div class="infobar">
+	<div class="admin-infobar">
+		<?php
+			foreach($adminInfobar as $info) {
+				echo $info;
+			}
+		?>
+	</div>
+</div>
