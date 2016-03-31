@@ -1,0 +1,6 @@
+{
+  "name": "MANAFX",
+  "tagline": "Web Application Framework",
+  "body": "### Welcome to MANAFX\r\nOpen source web application framework powered by Phalcon, a full-stack PHP framework delivered as a C-extension.\r\nIt's innovative architecture makes Phalcon the fastest PHP framework ever built! [See for yourself... ](http://docs.phalconphp.com/)\r\n\r\n### Designed for developer, everywhere.\r\nManafx makes web application development faster and easier. It's made for folks of all skill levels, application of all types, and projects of all sizes.\r\n\r\n### There are no limits!\r\nFrom simple to sophisticated, Manafx has the flexibility to power all sorts of web application. Flexible content structure and powerful templating allow easy realization of any design.\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
