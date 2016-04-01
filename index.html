@@ -1,82 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="Open source web application framework." />
+    <meta name="author" content="https://github.com/manacode" />
+    <link rel="shortcut icon" href="favicon.ico" />
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <title>Mana Web Application Framework</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/style.css" media="screen" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery.parallax-1.1.3.js"></script>
+		<script type="text/javascript" src="js/jquery.localScroll.min.js"></script>
+		<script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>
+	</head>
+	<body>
+		<div id="wrapper-main">
+	    <nav class="navbar navbar-default navbar-fixed-top">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+			      <a class="navbar-brand" href="http://manafx.com">
+			        <img width="20" height="20" alt="m" src="http://manafx.com/img/manafx-brand.png" />
+			      </a>
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+	            <li><a href="http://manafx.com/#home">Home</a></li>
+	            <li><a href="http://manafx.com/#download">Download</a></li>
+	            <li class="dropdown">
+	              <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Modules <span class="caret"></span></a>
+	              <ul class="dropdown-menu">
+	                <li><a href="http://manafx.com/#">Content Management System</a></li>
+	                <li class="divider" role="separator"></li>
+	                <li class="dropdown-header">Samples</li>
+	                <li><a href="http://manafx.com/#">Restful API</a></li>
+	              </ul>
+	            </li>
+	          </ul>
+	          <ul class="nav navbar-nav navbar-right">
+	            <li><a href="">Documentation</a></li>
+	            <li><a href="">Blog</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </nav>
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>MANAFX by manacode</title>
-  </head>
-
-  <body>
-    <a id="forkme_banner" href="https://github.com/manacode/manafx">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>MANAFX</h1>
-            <h2>Web Application Framework</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/manacode/manafx/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/manacode/manafx/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h3>
-<a id="welcome-to-manafx" class="anchor" href="#welcome-to-manafx" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to MANAFX</h3>
-
-<p>Open source web application framework powered by Phalcon, a full-stack PHP framework delivered as a C-extension.
-It's innovative architecture makes Phalcon the fastest PHP framework ever built! <a href="http://docs.phalconphp.com/">See for yourself... </a></p>
-
-<h3>
-<a id="designed-for-developer-everywhere" class="anchor" href="#designed-for-developer-everywhere" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designed for developer, everywhere.</h3>
-
-<p>Manafx makes web application development faster and easier. It's made for folks of all skill levels, application of all types, and projects of all sizes.</p>
-
-<h3>
-<a id="there-are-no-limits" class="anchor" href="#there-are-no-limits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>There are no limits!</h3>
-
-<p>From simple to sophisticated, Manafx has the flexibility to power all sorts of web application. Flexible content structure and powerful templating allow easy realization of any design.</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/manacode">manacode</a> can be found on <a href="https://github.com/manacode/manafx">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
-    </div>
-
-    
+	    <div id="wrapper-content" class="container-fluid">
+	      <div class="row">
+					<div id="home">
+						<div class="container">
+					  	<div class="content navscroll col-sm-9 col-md-7 col-lg-6">
+								<h1>mana<em>fx</em></h1>
+								<h2 class="sr-only">FRAMEWORK</h2>
+					      <p class="lead">Open source web application framework<br /><em>built with Phalcon</em>.</p>
+					      <a href="#featured" class="btn btn-primary btn-lg btn-main">Learn more..</a>
+					    </div>
+					  </div>
+					</div>
+					<div id="featured" class="featured">
+						<div class="container">
+							<div class="content">
+								<h2 class="title">Designed for developer, everywhere.</h2>
+								<p class="lead">Manafx makes web application development faster and easier. It's made for folks of all skill levels, application of all types, and projects of all sizes.</p>
+								<hr class="half-rule" />
+						
+								<div class="row">
+									<div class="col-xs-6 col-md-4">
+										<h3>Modular</h3>
+										<p>Build web application on top of Manafx is quite easy. With modular system, you can build many application or modules in just one place.</p>
+									</div>
+									<div class="col-xs-6 col-md-4">
+										<h3>Thematic</h3>
+										<p>Manafx ships with default responsive template built with Bootstrap, but you can use your own template and theme to enhance the appearance of your application.</p>
+									</div>
+									<div class="col-xs-6 col-md-4">
+										<h3>Multilingual</h3>
+										<p>Manage an unlimited number of languages and translations, without ever needing to step outside of the options available in the Manafx core software.</p>
+									</div>
+									<div class="col-xs-6 col-md-4">
+										<h3>MVC Pattern</h3>
+										<p>Manafx helps you develop clean and reusable code. It follows the Model-View-Controller pattern, ensuring a clear separation of logic and presentation.</p>
+									</div>
+									<div class="col-xs-6 col-md-4">
+										<h3>Secure</h3>
+										<p>Security comes as standard with Mana framework. It includes input validation, output filtering, SQL injection and Cross-site scripting prevention.</p>
+									</div>
+									<div class="col-xs-6 col-md-4">
+										<h3>Ultra Fast</h3>
+										<p>Manafx only loads the features that you need. C-extensions (Phalcon) are loaded together with PHP one time on the web server's daemon start process.</p>
+									</div>
+								</div>
+								<div class="clearfix">&nbsp;</div>
+								<div class="row navscroll">
+									<a class="btn btn-default btn-lg" href="#phalcon">and much more</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div id="phalcon">
+						<div class="bird col-xs-12"></div>
+						<div class="container">
+							<div class="content">
+								<div class="col-xs-12 col-sm-6 col-md-5 col-lg-6">
+								</div>
+								<div class="content-right navscroll col-xs-12 col-sm-6 col-md-7 col-lg-6">
+						      <h2>Phalcon Inside</h2>
+						      <h3>Built with Phalcon, a full-stack PHP framework delivered as a C-extension.</h3>
+						      <p class="lead">It's innovative architecture makes Phalcon the fastest PHP framework ever built!<br />
+									<a href="http://docs.phalconphp.com/"><em class="small">See for yourself..</em></a></p>
+									<a href="#download" class="phalcon-inside"></a>
+						    </div>
+					    </div>
+					  </div>
+					</div>
+					
+					<div id="download" class="featured">
+						<div class="container">
+							<div class="content">
+								<h2 class="title">There are no limits!</h2>
+								<br />
+								<p class="lead">From simple to sophisticated, Manafx has the flexibility to power all sorts of web application. Flexible content structure and powerful templating allow easy realization of any design.</p>
+								<hr class="half-rule" />
+								<p class="lead">Manafx is open source. It's hosted, developed, and maintained on GitHub.</p>
+								<a class="btn btn-default btn-lg" target="_blank" href="https://github.com/manacode/manafx/zipball/master">
+									Download <em>.ZIP</em>
+								</a>
+								<a class="btn btn-default btn-lg" target="_blank" href="https://github.com/manacode/manafx/tarball/master">
+									Download <em>.TGZ</em>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-footer" class="container-fluid">
+				<footer role="contentinfo" class="footer">
+						<div id="social-platforms">
+						  <a class="btn-social btn-icon btn-facebook" href="https://www.facebook.com/Mana-Framework-1027479650672080/"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+						  <a class="btn-social btn-icon btn-twitter" href="https://twitter.com/mannacode"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+						  <a class="btn-social btn-icon btn-googleplus" href="https://plus.google.com/117702076854499782348"><i class="fa fa-google-plus"></i><span>Google+</span></a>
+						  <a class="btn-social btn-icon btn-github" href="https://github.com/manacode/manafx"><i class="fa fa-github"></i><span>GitHub</span></a>
+						</div>
+						<p>Coded and built with all of the good hopes by <a target="_blank" href="https://twitter.com/mannacode">@mannacode</a>.</p>
+						<p>Code licensed <a target="_blank" href="https://github.com/manacode/manafx/blob/master/LICENSE" rel="license">MIT</a>, docs <a target="_blank" href="https://creativecommons.org/licenses/by/3.0/" rel="license">CC BY 3.0</a>.</p>
+				</footer>
+			</div>
+		</div>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+		<!--
+		$(document).ready(function(){
+			$('.navscroll').localScroll(800);
+			$('.navbar').localScroll(800);
+			$('#home').parallax("50%", 0.3);
+			$('#phalcon').parallax("50%", 0.2);
+			$('.bird').parallax("30%", 0.8);
+			$('#download').parallax("50%", 0.3);
+		})
+		-->
+		</script>		
   </body>
 </html>
