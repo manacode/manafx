@@ -220,8 +220,10 @@ function showBSOption(bsEl) {
 	bsEl.find('option.hide').each(function() {
 		idx = $(this).index();
 	  $(this).removeClass("hide");
-	  $('.bootstrap-select ul li[data-original-index="' + idx + '"]').removeClass("hide");
+	  // $('.bootstrap-select ul li[data-original-index="' + idx + '"]').removeClass("hide");
 	});
+	bsEl.selectpicker('refresh');
+	bsEl.selectpicker('render');
 }
 
 function hideBSOption(bsEl, optionValue) {
@@ -231,5 +233,24 @@ function hideBSOption(bsEl, optionValue) {
 	el = bsEl.find('option[value="' + optionValue + '"]');
 	idx = el.index();
   el.addClass("hide");
-  $('.bootstrap-select ul li[data-original-index="' + idx + '"]').addClass("hide");
+  // $('.bootstrap-select ul li[data-original-index="' + idx + '"]').addClass("hide");
+	bsEl.selectpicker('refresh');
+	bsEl.selectpicker('render');
+}
+
+function addItemBSOption(bsEl, attributes, htmlText) {
+	if (bsEl == undefined || bsEl=="_auto_") {
+		bsEl = $('.selectpicker');
+	}
+
+	var newItem = "<option";
+	for (var key in attributes) { 	
+		newItem += ' ' + key + '="' + attributes[key] + '"';
+	}
+	newItem += ">";
+	newItem += htmlText;
+	newItem += "</option>";
+	bsEl.append(newItem);
+	bsEl.selectpicker('refresh');
+	bsEl.selectpicker('render');
 }

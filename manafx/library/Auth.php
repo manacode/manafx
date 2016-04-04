@@ -496,6 +496,27 @@ class Auth extends Component
 		return $ret;
 	}
 
+	public function getRoles()
+	{
+		$roles_model = new User_Roles;
+		$roles = $roles_model::find(array(
+			'columns' => 'role_id, role_name',
+			'conditions' => 'role_status != "X" AND role_status != "R" AND role_id != 1',
+		));
+		return $roles;
+	}
+
+  function getDefaultRoleId() {
+  	$default_role = $this->config->application->default_role;
+  	if (!is_numeric($default_role)) {
+			$role = User_Roles::findFirst("role_name = '" . $default_role . "'");
+  		if ($role) {
+  			$default_role = $role->role_id;
+ 			}
+ 		}
+  	return $default_role;
+ 	}
+
 /**
  * CED (Create Edit Delete) AUTH
  **/

@@ -46,9 +46,6 @@ class ProfileController extends \ManafxAdminController {
 				$profile[$usermeta_key] = $usermeta_value;
 			}
 		}
-
-    $this->adminNavbarLeftMenu->setActive("none");
-    $this->adminSidebarMenu->setActive(array("_users", "profile"));
     $this->view->user = $user;
     $this->view->profile = $profile;
     $this->view->form = new \Manafx\Forms\ProfileForm($user);
@@ -59,6 +56,8 @@ class ProfileController extends \ManafxAdminController {
    */
   public function changePasswordAction()
   {
+    $this->adminNavbarRightMenu->setActive(array("_users", "_users_profile_change_password"));
+    $this->adminSidebarMenu->setActive(array("_users", "_users_profile_change_password"));
 	  $form = new \Manafx\Forms\ChangePasswordForm();
 	  if ($this->request->isPost()) {
 			if (!$form->isValid($this->request->getPost())) {
@@ -73,7 +72,6 @@ class ProfileController extends \ManafxAdminController {
 	  }
 		Tag::resetInput();
 	  $this->view->form = $form;
-	  $this->adminSidebarMenu->setActive(array("_users", "profile_change_password"));
   }
 
   public function updateProfileAction()

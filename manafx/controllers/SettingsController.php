@@ -246,8 +246,8 @@ class SettingsController extends \ManafxAdminController {
 
 	function grabModules() {
 		$dir = APP_PATH . '/modules';
-		$img_dir = APP_PATH . '/public/' . $this->config->application->template . '/img';
-		$img_uri = $this->config->application->baseUrl . '/' . $this->config->application->template . '/img';
+		$img_dir = APP_PATH . '/public/templates/' . $this->config->application->template . '/img';
+		$img_uri = $this->config->application->baseUrl . '/templates/' . $this->config->application->template . '/img';
 		$imgfs = array(".png", ".gif", ".jpg");
 		$modules = array();
 		if ($handle = opendir($dir)) {

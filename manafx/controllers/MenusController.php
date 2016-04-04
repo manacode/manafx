@@ -10,30 +10,35 @@ class MenusController extends \ManafxAdminController {
 		$this->auth->ced();
 		$data = new Menus;
 		$menus = $data->pfind(array(
-	    "conditions" => 'menu_type = "i"'
+	    "conditions" => 'menu_type = ""'
 		));
 
 		$this->view->pager = $data->getPager();
 		$this->view->menus = $menus;
 	}
 
-	public function getMenuAction($role_id="")
+	public function manageAction($menu_type = null)
 	{
 		if ($this->request->isPost()) {
-			$role_id = $this->request->getPost('role_id');
+			$menu_parent = $this->request->getPost('menu_type', 'striptags');
 		}
-	  # $role = Roles::findFirstByrole_id($role_id);
-	  $role = Roles::findFirst("role_id = '" . $role_id . "'");
-	  if (!$role) {
-    	$success = "0";
-      $msg = "Role was not found";
-    	$return = array("status" => $success, "msg" => $msg);
-	  } else {
-    	$success = "1";
-	  	$data = $role;
-    	$return = array("status" => $success, "data" => $data);
-  	}
-   echo json_encode($return);
+		if (empty($menu_type)) {
+			return false;
+		}
+		$data = new Menus;
+		$menus = $data->pfind(array(
+			"conditions" => "menu_type = '$menu_type'",
+	    "order" => "menu_parent"
+		));
+		echo "<pre>";
+		
+		$this->auth->ced();
+		$this->view->pager = $data->getPager();
+		$this->view->menus = makeTree($menus->toArray(), 0, 'menu_parent', 'menu_id');
+		$this->view->menu_type = $menu_type;
+		$this->view->roles = $this->auth->getRoles();
+		// $this->view->defaultRoleId = $this->auth->getDefaultRoleId();
+		$this->view->defaultRoleId = 10;
 	}
 
 	private function isExists($conditions)
@@ -51,7 +56,7 @@ class MenusController extends \ManafxAdminController {
 	  if ($this->request->isPost()) {
 			$menu_key = $this->request->getPost('menu_key', 'striptags');
 			
-			if ($this->isExists("menu_key = '$menu_key' AND menu_type = 'i'")) {
+			if ($this->isExists("menu_key = '$menu_key'")) {
 				$return = array("status" => "0", "msg" => "Menu shortcode already exists!");
 				echo json_encode($return);
 				return;
@@ -82,7 +87,46 @@ class MenusController extends \ManafxAdminController {
 	    $return = array("status" => $success, "msg" => $msg, "menu_id" => $menu_id);
 	    echo json_encode($return);
 	  }
-	
+	}
+
+	public function createMenuItemAction()
+	{
+	  if ($this->request->isPost()) {
+			$menu_type = $this->request->getPost('menu_type', 'striptags');
+			$menu_key = $this->request->getPost('menu_key', 'striptags');
+			
+			if ($this->isExists("menu_key = '$menu_key'")) {
+				$return = array("status" => "0", "msg" => "Menu slug already exists!");
+				echo json_encode($return);
+				return;
+			}
+			$menu = new Menus();
+
+	    $menu->assign(array(
+	    	'menu_type' => $menu_type,
+        'menu_key' => $menu_key,
+        'menu_parent' => $this->request->getPost('menu_parent', 'striptags'),
+        'menu_title' => $this->request->getPost('menu_title', 'striptags'),
+        'menu_action' => $this->request->getPost('menu_action', 'striptags'),
+        'menu_roles' => $this->request->getPost('menu_roles', 'striptags'),
+        'menu_status' => $this->request->getPost('menu_status', 'striptags'),
+        'menu_description' => $this->request->getPost('menu_description', 'striptags')
+	    ));
+			$menu_id = "";
+	    if (!$menu->create()) {
+	    	$success = "0";
+	    	$msg = "";
+				foreach ($menu->getMessages() as $message) {
+			    $msg .= $message->getMessage() . "<br/>";
+				}
+	    } else {
+	    	$success = "1";
+   			$menu_id = $menu->menu_id;
+      	$msg = "New menu item `" . $menu_key . "` was saved successfully";
+	    }
+	    $return = array("status" => $success, "msg" => $msg, "menu_id" => $menu_id);
+	    echo json_encode($return);
+	  }
 	}
 
 	public function updateMenuAction()
@@ -91,7 +135,7 @@ class MenusController extends \ManafxAdminController {
 	  	$menu_id = $this->request->getPost('menu_id', 'striptags');
 			$menu_key = $this->request->getPost('menu_key', 'striptags');
 			
-			if ($this->isExists("menu_key = '$menu_key' AND menu_type = 'i' AND menu_id != $menu_id")) {
+			if ($this->isExists("menu_key = '$menu_key' AND menu_id != $menu_id")) {
 				$return = array("status" => "0", "msg" => "Menu shortcode already exists!");
 				echo json_encode($return);
 				return;
@@ -113,6 +157,42 @@ class MenusController extends \ManafxAdminController {
 	    } else {
 	    	$success = "1";
       	$msg = "Menu was updated successfully";
+	    }
+	    $return = array("status" => $success, "msg" => $msg, "menu_id" => $menu_id);
+	    echo json_encode($return);
+	  }
+	}
+
+	public function updateMenuItemAction()
+	{
+	  if ($this->request->isPost()) {
+	  	$menu_id = $this->request->getPost('menu_id', 'striptags');
+			$menu_key = $this->request->getPost('menu_key', 'striptags');
+			
+			if ($this->isExists("menu_key = '$menu_key' AND menu_id != $menu_id")) {
+				$return = array("status" => "0", "msg" => "Menu slug already exists!");
+				echo json_encode($return);
+				return;
+			}
+			$menu = Menus::findFirst("menu_id = '" . $menu_id . "'");
+	    $menu->assign(array(
+        'menu_key' => $menu_key,
+        'menu_parent' => $this->request->getPost('menu_parent', 'striptags'),
+        'menu_title' => $this->request->getPost('menu_title', 'striptags'),
+        'menu_roles' => $this->request->getPost('menu_roles', 'striptags'),
+        'menu_status' => $this->request->getPost('menu_status', 'striptags'),
+        'menu_description' => $this->request->getPost('menu_description', 'striptags')
+	    ));
+	
+	    if (!$menu->update()) {
+	    	$success = "0";
+	    	$msg = "";
+				foreach ($menu->getMessages() as $message) {
+			    $msg .= $message->getMessage() . "<br/>";
+				}
+	    } else {
+	    	$success = "1";
+      	$msg = "Menu item was updated successfully";
 	    }
 	    $return = array("status" => $success, "msg" => $msg, "menu_id" => $menu_id);
 	    echo json_encode($return);
@@ -141,7 +221,6 @@ class MenusController extends \ManafxAdminController {
 		}
 		$return = array("status" => $success, "msg" => $msg);
 		echo json_encode($return);
-
   }
 
 }

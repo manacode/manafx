@@ -174,39 +174,4 @@ class ThemesController extends \ManafxAdminController {
 		}
 		return $themes;
 	}
-
-	function grabThemesX($template) {
-		$dir = APP_PATH . '/public/templates/' . $this->current_template . '/themes';
-		$uri = $this->config->application->baseUrl . '/templates/' . $this->current_template. '/themes';
-		$imgfs = array(".png", ".gif", ".jpg");
-		$themes = array();
-		if ($handle = opendir($dir)) {
-	    while (false !== ($entry = readdir($handle))) {
-        if (is_dir($dir . "/" . $entry) && $entry != "." && $entry != "..") {
-        	$theme_info_path = $dir . "/" . $entry . "/theme.xml";
-        	if (is_file($theme_info_path)) {
-	          $info_xml = simplexml_load_file($theme_info_path);
-	          $info_json = json_encode($info_xml);
-						$info_array = json_decode($info_json, true);
-
-        		$screenshot_path = $dir . "/" . $entry . "/screenshot";
-        		$screenshot_uri = $uri . "/" . $entry . "/screenshot";
-        		$screenshot = "";
-        		foreach($imgfs as $imgf) {
-        			if (is_file($screenshot_path . $imgf)) {
-        				$screenshot = $screenshot_uri . $imgf;
-        				break;
-       				}
-       			}
-						$info_array["screenshot"] = $screenshot;
-	          $themes[$entry] = $info_array;
-         	}
-        }
-	    }
-	    closedir($handle);
-		}
-		return $themes;
-	}
-	
-
 }

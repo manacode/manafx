@@ -31,24 +31,36 @@ class AdminNavMenu extends Phalcon\Mvc\User\Component
 		$this->_activeMenu = $active;
 	}
 
-	public function addMenu($menus)
+	public function addMenu($menus, $after = null)
 	{
+		$afterKey = $after;
 		foreach ($menus as $key => $menu) {
 			$parent = false;
 			if (isset($menu['parent'])) {
 				$parent = $menu['parent'];
 			}
-			if ($parent==false) {	
-				$this->_menus[$key] = $menu;
-			} else {	
+			if ($parent==false) {
+				// $this->_menus[$key] = $menu;
+				$this->_menus = array_insert_after($this->_menus, $afterKey, array($key => $menu));
+			} else {
 				if (!isset($this->_menus[$parent])) {
-					$this->_menus[$parent] = array('caption' => $parent);
+					// $this->_menus[$parent] = array('caption' => $parent, 'submenus' => array());
+					$this->_menus = array_insert_after($this->_menus, $afterKey, array($parent => array('caption' => $parent, 'submenus' => array())));
+					// $afterKey = null;
 				}
-				$this->_menus[$parent]['submenus'][$key] = $menu;
+				// if (isset($this->_menus[$parent]['submenus'][$after])) {
+				if (array_key_exists($after, $this->_menus[$parent]['submenus'])) {
+					$afterKey = $after;
+				} else {
+					$afterKey = null;
+				}
+				// $this->_menus[$parent]['submenus'][$key] = $menu;
+				$this->_menus[$parent]['submenus']= array_insert_after($this->_menus[$parent]['submenus'], $afterKey, array($key => $menu));
+				
 			}
 		}
 	}
-	
+
 	function checkPermission($user_roles, $menu_roles)
 	{
 		$allowed = false;
@@ -171,7 +183,6 @@ class AdminNavMenu extends Phalcon\Mvc\User\Component
 		return $this->_menus;
 	}
 
-
 	private function initMenus()
 	{
 		$tag = $this->tag;
@@ -182,180 +193,17 @@ class AdminNavMenu extends Phalcon\Mvc\User\Component
 
 	function initNavbarLeftMenu()
 	{
-		$this->_menus = $this->getAdminMenu();
-		unset($this->_menus['_users']);
-		unset($this->_menus['_appearance']);
+		$this->_menus = include CORE_PATH . "/config/menu-navbar-left.php";
 	}
 	
 	function initNavbarRightMenu()
 	{
-		$this->_menus = array(
-	    '_users' => array(
-	      'caption' => $this->t->_('Hi', 'Howdy') . ', <b>' . $this->auth['user_username'] . '</b>',
-	      'action' => 'javascript:void(0)',
-	      'roles' => array(),
-	      'submenus' => array(
-	      	'profile' => array(
-	      		'caption' => $this->t->_('My Profile'),
-	      		'action' => $this->adminUri . '/profile',
-	      		'roles' => array(),
-	      		'beforeCaption' => '<span class="glyphicon glyphicon-education"></span>',
-	      	),
-	      	'profile_change_password' => array(
-	      		'caption' => $this->t->_('Change Password'),
-	      		'action' => $this->adminUri . '/profile/change-password',
-	      		'roles' => array(),
-	      		'beforeCaption' => '<span class="glyphicon glyphicon-asterisk"></span>',
-	      	),
-	      	'logout' => array(
-	    			'caption' => $this->t->_('Log Out'),
-	    			'action' => $this->adminUri . '/logout',
-	    			'roles' => array(),
-	    			'beforeCaption' => '<span class="glyphicon glyphicon-off"></span>',
-	      		'divider' => true,
-	      	),
-	      ),
-	    ),
-	    '_help' => array(
-	        'caption' => $this->t->_('Help'),
-	        'action' => 'javascript:void(0)',
-	        'roles' => array(),
-	    ),
-		);
+		$this->_menus = include CORE_PATH . "/config/menu-navbar-right.php";
 	}
 	
 	
 	function initSidebarMenu()
 	{
-		$this->_menus = $this->getAdminMenu();
-	}
-
-	protected function getAdminMenu()
-	{
-	  return array(
-		  '_users' => array(
-		    'caption' => $this->t->_('Users'),
-		    'roles' => array(),
-		    'beforeCaption' => '<span class="glyphicon glyphicon-user"></span>',
-		    'submenus' => array(
-		    	'users_subheader' => array(
-		    		'caption' => $this->t->_('Users Manager'),
-		    		'action' => '',
-		    		'roles' => array(1,2),
-		    		'class' => "nav-subheader",
-		    	),
-		    	'users_search' => array(
-		    		'caption' => $this->t->_('Search Users'),
-		    		'action' => $this->adminUri . '/users',
-		    		'roles' => array(1,2),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-user"></span>',
-		    	),
-		    	'user_create' => array(
-		    		'caption' => $this->t->_('Create User'),
-		    		'action' => $this->adminUri . '/users/create-user',
-		    		'roles' => array(1,2),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-plus-sign"></span>',
-		    	),
-		    	'roles' => array(
-		  			'caption' => $this->t->_('Roles'),
-		  			'action' => $this->adminUri . '/roles',
-		  			'roles' => array(1,2),
-		  			'divider' => true,
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-fire"></span>',
-		    	),
-		    	'permissions' => array(
-		  			'caption' => $this->t->_('Permissions'),
-		  			'action' => $this->adminUri . '/permissions',
-		  			'roles' => array(1,2),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-lock"></span>',
-		    	),
-		    	'profile_subheader' => array(
-		    		'caption' => $this->t->_('My Profile'),
-		    		'action' => '',
-		    		'roles' => array(1,2),
-		  			'divider' => true,
-		    		'class' => "nav-subheader",
-		    	),
-		    	'profile' => array(
-		  			'caption' => $this->t->_('Edit Profile'),
-		  			'action' => $this->adminUri . '/profile',
-		  			'roles' => array(),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-education"></span>',
-		    	),
-		    	'profile_change_password' => array(
-		  			'caption' => $this->t->_('Change Password'),
-		  			'action' => $this->adminUri . '/profile/change-password',
-		  			'roles' => array(),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-asterisk"></span>',
-		    	),
-		    ),
-		  ),
-		  '_appearance' => array(
-		    'caption' => $this->t->_('Appearance'),
-		    'roles' => array(1,2),
-		    'beforeCaption' => '<span class="glyphicon glyphicon-eye-open"></span>',
-		    'submenus' => array(
-		    	'themes' => array(
-		    		'caption' => $this->t->_('Themes'),
-		    		'action' => $this->adminUri . '/themes',
-		    		'roles' => array(1,2),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-phone"></span>',
-		    	),
-		    	'menus' => array(
-		  			'caption' => $this->t->_('Menus'),
-		  			'action' => $this->adminUri . '/menus',
-		  			'roles' => array(1,2),
-		  			'divider' => true,
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-list"></span>',
-		    	),
-		    ),
-		  ),
-		  '_settings' => array(
-		    'caption' => $this->t->_('Settings'),
-		    'roles' => array(1,2),
-		    'beforeCaption' => '<span class="glyphicon glyphicon-cog"></span>',
-		    'submenus' => array(
-		    	'general' => array(
-		    		'caption' => $this->t->_('General'),
-		    		'action' => $this->adminUri . '/settings/general',
-		    		'roles' => array(1,2),
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-cog"></span>',
-		    	),
-		    	'modules' => array(
-		  			'caption' => $this->t->_('Modules'),
-		  			'action' => $this->adminUri . '/settings/modules',
-		  			'roles' => array(1,2),
-		  			'divider' => false,
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-paperclip"></span>',
-		    	),
-		    	'languages' => array(
-		  			'caption' => $this->t->_('Languages'),
-		  			'action' => $this->adminUri . '/languages',
-		  			'roles' => array(1,2),
-		  			'divider' => false,
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-globe"></span>',
-		    	),
-		    	'options' => array(
-		  			'caption' => $this->t->_('All Options'),
-		  			'action' => $this->adminUri . '/options',
-		  			'roles' => array(1),
-		  			'divider' => true,
-		    		'class' => "",
-		    		'beforeCaption' => '<span class="glyphicon glyphicon-record"></span>',
-		    	),
-		    ),
-		  ),
-		);
+		$this->_menus = include CORE_PATH . "/config/menu-sidebar.php";
 	}
 }

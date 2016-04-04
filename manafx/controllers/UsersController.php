@@ -147,7 +147,6 @@ class UsersController extends \ManafxAdminController {
     	$this->view->roles = $this->getRoles();
 			$this->view->default_role = $this->getDefaultRoleId();
 		 	$this->view->form = new UsersForm();
-			# $this->auth->ced(array('create'=>'CreateUser', 'edit'=>'UpdateUser', 'delete'=>'DeleteUsers'));
     }
   }
 
@@ -208,6 +207,8 @@ class UsersController extends \ManafxAdminController {
    */
   public function createUserAction()
   {
+  	$this->adminNavbarLeftMenu->setActive(array("_users", "_users_create"));
+  	$this->adminSidebarMenu->setActive(array("_users", "_users_create"));
 	  if ($this->request->isPost()) {
   		$this->view->disable();
 	  	$success = 0;
@@ -279,8 +280,6 @@ class UsersController extends \ManafxAdminController {
 			}
 	  }
  	 	$this->getAllUserStats();
-  	$this->adminNavbarLeftMenu->setActive(array("_users", "user_create"));
-  	$this->adminSidebarMenu->setActive(array("_users", "user_create"));
 		$entity = null;
 		if ($this->session->has("create_user_data")) {
 			$entity = new Users;

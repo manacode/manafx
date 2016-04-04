@@ -24,7 +24,7 @@ class Menus extends \ManafxModel
 	public function beforeValidation() {
     $this->menu_roles = CSVImplode($this->menu_roles);		
 	}
-
+	// note: afterFetch is not working for .toArray()
 	public function afterFetch() {
     $this->menu_roles = CSVExplode($this->menu_roles);
 	}    
